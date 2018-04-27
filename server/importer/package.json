@@ -1,0 +1,9 @@
+{
+  "name": "importer",
+  "version": "0.1.0",
+  "description": "Import scripts helper to pull data from Airtable",
+  "main": "index.js",
+  "author": "Nam Pham <nampdn@protonmail.com>",
+  "license": "MIT",
+  "private": true
+}
