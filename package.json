@@ -1,0 +1,10 @@
+{
+  "name": "vichurch",
+  "version": "0.1.0",
+  "description": "Church platform solution for Christian leaders.",
+  "main": "index.js",
+  "repository": "git@github.com:write-for-CHRIST/vichurch.git",
+  "author": "Nam Pham <nampdn@protonmail.com>",
+  "license": "MIT",
+  "private": true
+}
