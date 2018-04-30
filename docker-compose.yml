@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  client_app:
+    build:
+      context: client/app
+    volumes:
+      - yarn:/home/node/.cache/yarn
+      - ./client/app:/app
+      - ./client/app/package.json:/app/package.json
+      - ./client/app/yarn.lock:/app/yarn.lock
+      - ./tools/yarn.js:/app/yarn.js
+  server_graph:
+    build:
+      context: server/graph
+    ports:
+      - 7000:4000
+      - 7001:4001
+    networks:
+      - prisma
+    volumes:
+      - yarn:/home/node/.cache/yarn
+      - ./server/graph:/usr/src/app
+      - ./server/graph/package.json:/usr/src/app/package.json
+      - ./server/graph/yarn.lock:/usr/src/app/yarn.lock
+      - ./tools/yarn.js:/usr/src/app/yarn.js
+      - ~/.prisma/config.yml:/root/.prisma/config.yml
+    env_file:
+      - .env
+  server_importer:
+    build:
+      context: server/importer
+    ports:
+      - 7002:7002
+    networks:
+      - prisma
+    volumes:
+      - yarn:/home/node/.cache/yarn
+      - ./server/importer:/usr/src/app
+
+volumes:
+  yarn:
+
+networks:
+  prisma:
+    external:
+      name: local_prisma

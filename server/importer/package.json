@@ -5,5 +5,44 @@
   "main": "index.js",
   "author": "Nam Pham <nampdn@protonmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "airtable": "^0.5.3",
+    "callbag-basics": "^3.0.0",
+    "callbag-observe": "^1.0.0",
+    "callbag-subject": "^1.0.2",
+    "graphql-request": "^1.5.2",
+    "immutable": "^3.8.2",
+    "koa": "^2.5.1",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.45",
+    "@types/koa-router": "^7.0.28",
+    "@types/lodash": "^4.14.108",
+    "@types/node": "^10.0.0",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "cross-env": "^5.1.4",
+    "jest": "^22.4.3",
+    "nodemon": "^1.17.3",
+    "npm-run-all": "^4.1.2",
+    "ts-jest": "^22.4.4",
+    "ts-node": "^6.0.2",
+    "tslint": "^5.9.1",
+    "tslint-config-standard": "^7.0.0",
+    "typescript": "^2.8.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "/src/.*.test.(ts|tsx|js)$"
+  }
 }

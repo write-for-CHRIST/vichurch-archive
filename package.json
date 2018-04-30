@@ -6,5 +6,9 @@
   "repository": "git@github.com:write-for-CHRIST/vichurch.git",
   "author": "Nam Pham <nampdn@protonmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "docker-compose build",
+    "start": "docker-compose up"
+  }
 }
