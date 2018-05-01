@@ -6,6 +6,9 @@
   "author": "Nam Pham <nampdn@protonmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' src/server.ts"
+  },
   "dependencies": {
     "airtable": "^0.5.3",
     "callbag-basics": "^3.0.0",
@@ -35,11 +38,7 @@
     "typescript": "^2.8.3"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js"],
     "transform": {
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },

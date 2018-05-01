@@ -2,10 +2,10 @@
   "name": "graph",
   "version": "0.1.0",
   "scripts": {
-    "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
-    "dev": "npm-run-all --parallel start playground",
-    "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
-    "playground": "graphql playground",
+    "server": "nodemon -e ts,graphql -x ts-node src/index.ts",
+    "start": "run-p server playground",
+    "debug": "nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
+    "playground": "graphql playground --server-only --port 4001",
     "build": "rimraf dist && tsc"
   },
   "dependencies": {
