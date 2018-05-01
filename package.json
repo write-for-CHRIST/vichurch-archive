@@ -11,7 +11,16 @@
     "chmod": "chmod +x ./tools/*.sh",
     "preinstall": "npm run chmod && ./tools/setup.sh",
     "build": "nodenv -E build.env -e 'docker-compose build'",
-    "start": "docker-compose up"
+    "start": "docker-compose up",
+    "exec:app": "docker-compose exec client_app",
+    "exec:graph": "docker-compose exec server_graph",
+    "exec:importer": "docker-compose exec server_importer",
+    "attach:app": "yarn exec:app /bin/sh",
+    "attach:graph": "yarn exec:graph /bin/sh",
+    "attach:importer": "yarn exec:importer /bin/sh",
+    "add:app": "docker-compose run --rm --no-deps client_app yarn add",
+    "add:graph": "docker-compose run --rm --no-deps server_graph yarn add",
+    "add:importer": "docker-compose run --rm --no-deps server_graph yarn add"
   },
   "devDependencies": {
     "node-env-run": "^3.0.2"
