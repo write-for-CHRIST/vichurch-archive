@@ -37,6 +37,11 @@ services:
     volumes:
       - yarn:/home/node/.cache/yarn
       - ./server/importer:/usr/src/app
+      - ./server/importer/package.json:/usr/src/app/package.json
+      - ./server/importer/yarn.lock:/usr/src/app/yarn.lock
+      - ./tools/yarn.js:/usr/src/app/yarn.js
+    env_file:
+      - .env
 
 volumes:
   yarn:
