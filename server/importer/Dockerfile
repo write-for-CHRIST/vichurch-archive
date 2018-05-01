@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app/node_modules
 
 WORKDIR /usr/src/app
 
-COPY package.json yarn.lock package-lock.json ./
+COPY package.json yarn.lock ./
 
 RUN set -ex; \
   if [ "$NODE_ENV" = "production"]; then \
