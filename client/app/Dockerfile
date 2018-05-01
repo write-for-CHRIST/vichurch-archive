@@ -1,13 +1,24 @@
 FROM node:9-alpine
 
+# Bind environments
 ARG NODE_ENV=production
+ARG EXPO_USERNAME
+ARG EXPO_PASSWORD
+ENV NODE_ENV=$NODE_ENV
+ENV EXPO_USERNAME=$EXPO_USERNAME
+ENV EXPO_PASSWORD=$EXPO_PASSWORD
 
+# File location settings
 RUN mkdir -p /app/node_modules
-
 WORKDIR /app
-
 COPY package.json yarn.lock package-lock.json ./
 
+# Install and login expo
+RUN npm install -g exp
+RUN echo $EXPO_USERNAME $EXPO_PASSWORD
+RUN exp login --username $EXPO_USERNAME --password $EXPO_PASSWORD
+
+# Setup dependencies for different environments
 RUN set -ex; \
   if [ "$NODE_ENV" = "production"]; then \
     echo "Build for production image"; \
@@ -24,8 +35,11 @@ RUN set -ex; \
     chown -R root:root node_modules package.json yarn.lock /home/node/.cache/yarn; \
   fi;
 
+# Copy project files to docker container
 COPY . .
 
+# Switch user to root
 USER root
 
+# Use yarn.js tool to start application
 CMD ["node", "yarn.js"]
