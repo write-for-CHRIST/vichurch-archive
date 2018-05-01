@@ -8,7 +8,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "docker-compose build",
+    "chmod": "chmod +x ./tools/*.sh",
+    "preinstall": "npm run chmod && ./tools/setup.sh",
+    "build": "nodenv -E build.env -e 'docker-compose build'",
     "start": "docker-compose up"
+  },
+  "devDependencies": {
+    "node-env-run": "^3.0.2"
   }
 }

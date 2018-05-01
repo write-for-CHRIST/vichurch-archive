@@ -4,6 +4,9 @@ services:
   client_app:
     build:
       context: client/app
+      args:
+        - EXPO_USERNAME
+        - EXPO_PASSWORD
     volumes:
       - yarn:/home/node/.cache/yarn
       - ./client/app:/app
@@ -16,8 +19,6 @@ services:
     ports:
       - 7000:4000
       - 7001:4001
-    networks:
-      - prisma
     volumes:
       - yarn:/home/node/.cache/yarn
       - ./server/graph:/usr/src/app
@@ -26,14 +27,12 @@ services:
       - ./tools/yarn.js:/usr/src/app/yarn.js
       - ~/.prisma/config.yml:/root/.prisma/config.yml
     env_file:
-      - .env
+      - container.env
   server_importer:
     build:
       context: server/importer
     ports:
       - 7002:7002
-    networks:
-      - prisma
     volumes:
       - yarn:/home/node/.cache/yarn
       - ./server/importer:/usr/src/app
@@ -41,12 +40,7 @@ services:
       - ./server/importer/yarn.lock:/usr/src/app/yarn.lock
       - ./tools/yarn.js:/usr/src/app/yarn.js
     env_file:
-      - .env
+      - container.env
 
 volumes:
   yarn:
-
-networks:
-  prisma:
-    external:
-      name: local_prisma

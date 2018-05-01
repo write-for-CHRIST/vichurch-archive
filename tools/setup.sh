@@ -13,11 +13,20 @@ command -v prisma >/dev/null 2>&1 || {
   npm install -g prisma;
 }
 
-# Make copy of sample.env file to .env for docker-compose.
-envfile=$(pwd)/.env
-if [ -f $(pwd)/.env ]; then
-  echo ".env file already existed, skip copy!";
+# Make copy of sample.container.env file to .env for docker-compose.
+build_env_file=$(pwd)build.env
+container_env_file=$(pwd)/container.env
+
+if [ -f $(pwd)/build.env ]; then
+  echo "build.env file already existed, skip copy!";
 else
-  cp sample.env .env;
-  echo "Copie .env file: "$envfile;
+  cp sample.build.env build.env;
+  echo "Copied build.env file: "$build_env_file;
+fi;
+
+if [ -f $(pwd)/container.env ]; then
+  echo "container.env file already existed, skip copy!";
+else
+  cp sample.container.env container.env
+  echo "Copied container.env file: "$container_env_file;
 fi;
