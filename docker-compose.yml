@@ -7,6 +7,10 @@ services:
       args:
         - EXPO_USERNAME
         - EXPO_PASSWORD
+    ports:
+      - 19000:19000
+      - 19001:19001
+      - "0.0.0.0:4040:4040"
     volumes:
       - yarn:/home/node/.cache/yarn
       - ./client/app:/app

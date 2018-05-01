@@ -2,7 +2,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
-    "start": "exp start",
+    "start": "exp start --tunnel",
     "test": "node ./node_modules/jest/bin/jest.js --watchAll"
   },
   "jest": {

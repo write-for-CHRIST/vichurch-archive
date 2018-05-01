@@ -1,4 +1,4 @@
-FROM node:9-alpine
+FROM node:9
 
 # Bind environments
 ARG NODE_ENV=production
@@ -40,6 +40,11 @@ COPY . .
 
 # Switch user to root
 USER root
+
+EXPOSE 19000
+EXPOSE 19001
+EXPOSE 4040
+EXPOSE 80
 
 # Use yarn.js tool to start application
 CMD ["node", "yarn.js"]
