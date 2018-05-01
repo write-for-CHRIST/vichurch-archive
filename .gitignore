@@ -1,5 +1,10 @@
+# Common
 node_modules/
 .expo/
 build.env
 container.env
 *error.log
+
+# Ignore yarn.js empty from docker mounted file.
+server/**/yarn.js
+client/**/yarn.js
