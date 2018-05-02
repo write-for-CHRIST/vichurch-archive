@@ -17,7 +17,13 @@ Vietnamese Church Management Platform
 * VSCode
 
 ### Up and running:
-* Fork and clone this repo
-* Run: `yarn` and answer installation question.
+* Fork and clone this repo to your account.
+* Run and answer installation question: 
+```bash
+yarn
+```
 * Update newly created env files: `build.env` and `container.env`
-* Run: `yarn start`
+* Run: 
+```bash
+yarn start
+```
