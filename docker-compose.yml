@@ -17,9 +17,13 @@ services:
       - ./client/app/package.json:/app/package.json
       - ./client/app/yarn.lock:/app/yarn.lock
       - ./tools/yarn.js:/app/yarn.js
+    env_file:
+      - container.env
   server_graph:
     build:
       context: server/graph
+      args:
+        - NODE_ENV=development
     ports:
       - 7000:4000
       - 7001:4001
@@ -35,6 +39,8 @@ services:
   server_importer:
     build:
       context: server/importer
+      args:
+        - NODE_ENV=development
     ports:
       - 7002:7002
     volumes:
