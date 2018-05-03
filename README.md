@@ -58,13 +58,18 @@ npm run start
 
 ### Environment variables:
 
-| ENV             | DESCRIPTION                                                     | FILE          |
-| --------------- | --------------------------------------------------------------- | ------------- |
-| EXPO_USERNAME   | Expo username credentials                                       | build.env     |
-| EXPO_PASSWORD   | Expo password credentials                                       | buid.env      |
-| IMPORT_PORT     | Port of import micro-service                                    | container.env |
-| PRISMA_ENDPOINT | Url of Prisma server for this project (locally)                 | container.env |
-| GRAPH_ENDPOINT  | Url of GraphQL service (this will be published to the internet) | container.env |
+| ENV                            | DESCRIPTION                                                     | FILE          |
+| ------------------------------ | --------------------------------------------------------------- | ------------- |
+| EXPO_USERNAME                  | Expo username credentials                                       | build.env     |
+| EXPO_PASSWORD                  | Expo password credentials                                       | buid.env      |
+| IMPORT_PORT                    | Port of import micro-service                                    | container.env |
+| PRISMA_ENDPOINT                | Url of Prisma server for this project (locally)                 | container.env |
+| GRAPH_ENDPOINT                 | Url of GraphQL service (this will be published to the internet) | container.env |
+| PRISMA_SECRET                  | Secret string for Prisma application                            | container.env |
+| APP_SECRET                     | App authentication secret                                       | container.env |
+| AIRTABLE_API_KEY               | AirTable API access key for the importer                        | container.env |
+| EXPO_HOST                      | Which host Expo should run (tunnel, lan, localhost)             | container.env |
+| REACT_NATIVE_PACKAGER_HOSTNAME | Local development machine IP                                    | container.env |
 
 ### Build and deployment:
 
