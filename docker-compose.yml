@@ -1,6 +1,31 @@
 version: '3'
 
 services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: prisma
+  prisma:
+    image: prismagraphql/prisma:1.7
+    restart: always
+    ports:
+      - "4466:4466"
+    depends_on:
+      - db
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        # uncomment the next line and provide the env var PRISMA_MANAGEMENT_API_SECRET=my-secret to activate cluster security
+        # managementApiSecret: my-secret
+        databases:
+          default:
+            connector: mysql
+            active: true
+            host: db
+            port: 3306
+            user: root
+            password: prisma
   client_app:
     build:
       context: client/app
@@ -36,6 +61,8 @@ services:
       - ~/.prisma/config.yml:/root/.prisma/config.yml
     env_file:
       - container.env
+    depends_on:
+      - prisma
   server_importer:
     build:
       context: server/importer
@@ -51,6 +78,8 @@ services:
       - ./tools/yarn.js:/usr/src/app/yarn.js
     env_file:
       - container.env
+    depends_on:
+      - prisma
 
 volumes:
   yarn:
