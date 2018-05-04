@@ -47,6 +47,11 @@ npm install
 
 * Modify environment value in these files: `build.env` and `container.env`. See (#environment-variables) for more details.
 
+* Build docker image using `docker-compose`:
+```bash
+yarn build
+```
+
 * Start all development services:
 
 ```bash
