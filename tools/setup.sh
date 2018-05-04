@@ -30,3 +30,17 @@ else
   cp sample.container.env container.env
   echo "Copied container.env file: "$container_env_file;
 fi;
+
+# Deploy graphql project
+
+deploy_graphql_prisma() {
+    export $(cat .env | xargs)
+    cd server/graph && prisma deploy
+}
+
+read -p "Do you want to deploy graph project to local Prisma server? (Y/n) " yn
+case $yn in
+    [Yy]* ) deploy_graphql_prisma;;
+    [Nn]* ) echo "";;
+    * ) echo "Please answer yes or no.";;
+esac
