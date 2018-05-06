@@ -25,7 +25,7 @@
     "add:app": "docker-compose run --rm --no-deps client_app yarn add",
     "add:graph": "docker-compose run --rm --no-deps server_graph yarn add",
     "add:importer": "docker-compose run --rm --no-deps server_graph yarn add",
-    "deploy:graph": "cd server/graph && prisma deploy"
+    "deploy:graph": "nodenv -E container.env -e 'cd server/graph && prisma deploy'"
   },
   "devDependencies": {
     "node-env-run": "^3.0.2"
