@@ -61,6 +61,19 @@ yarn start
 npm run start
 ```
 
+Run Expo application on your mobile phone with the Expo account that you've specified in `build.env` file.
+
+* After start development services first time, let's deploy GraphQL Schema to Prisma local server:
+
+```bash
+yarn deploy:graph
+# Or
+npm run deploy:graph
+```
+
+This will deploy database schema and seed the database with some datasets. If you didn't run this, the GraphQL server is not accessible because there is no project deployed.
+
+
 ### Environment variables:
 
 | ENV                            | DESCRIPTION                                                     | FILE          |
