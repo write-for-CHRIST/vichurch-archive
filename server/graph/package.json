@@ -2,8 +2,8 @@
   "name": "graph",
   "version": "0.1.0",
   "scripts": {
-    "server": "nodemon -e ts,graphql -x ts-node src/index.ts",
     "start": "run-p server playground",
+    "server": "nodemon -e ts,graphql -x ts-node src/index.ts",
     "debug": "nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "playground": "graphql playground --server-only --port 4001",
     "build": "rimraf dist && tsc"
