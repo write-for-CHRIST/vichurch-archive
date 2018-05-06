@@ -4,6 +4,7 @@ node_modules/
 build.env
 container.env
 *error.log
+.DS_Store
 
 # Ignore yarn.js empty from docker mounted file.
 server/**/yarn.js
