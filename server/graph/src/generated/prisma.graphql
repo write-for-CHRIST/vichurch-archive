@@ -1,7 +1,27 @@
-# source: https://us1.prisma.sh/public-dentgazelle-466/graph/dev
-# timestamp: Sun Apr 29 2018 06:28:34 GMT+0700 (+07)
+# source: http://localhost:4466
+# timestamp: Sun May 06 2018 23:16:43 GMT+0700 (+07)
+
+type AggregateChurch {
+  count: Int!
+}
+
+type AggregateDepartment {
+  count: Int!
+}
+
+type AggregateDisciple {
+  count: Int!
+}
+
+type AggregateFloor {
+  count: Int!
+}
 
 type AggregatePost {
+  count: Int!
+}
+
+type AggregateRoom {
   count: Int!
 }
 
@@ -14,7 +34,1226 @@ type BatchPayload {
   count: Long!
 }
 
+type Church implements Node {
+  id: ID!
+  domain: String!
+  name: String!
+  _floors(where: FloorWhereInput, orderBy: FloorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Floor!]
+}
+
+"""A connection to a list of items."""
+type ChurchConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ChurchEdge]!
+  aggregate: AggregateChurch!
+}
+
+input ChurchCreateInput {
+  domain: String!
+  name: String!
+  _floors: FloorCreateManyWithout_churchInput
+}
+
+input ChurchCreateOneWithout_floorsInput {
+  create: ChurchCreateWithout_floorsInput
+  connect: ChurchWhereUniqueInput
+}
+
+input ChurchCreateWithout_floorsInput {
+  domain: String!
+  name: String!
+}
+
+"""An edge in a connection."""
+type ChurchEdge {
+  """The item at the end of the edge."""
+  node: Church!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ChurchOrderByInput {
+  id_ASC
+  id_DESC
+  domain_ASC
+  domain_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ChurchPreviousValues {
+  id: ID!
+  domain: String!
+  name: String!
+}
+
+type ChurchSubscriptionPayload {
+  mutation: MutationType!
+  node: Church
+  updatedFields: [String!]
+  previousValues: ChurchPreviousValues
+}
+
+input ChurchSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ChurchSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ChurchSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ChurchSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ChurchWhereInput
+}
+
+input ChurchUpdateInput {
+  domain: String
+  name: String
+  _floors: FloorUpdateManyWithout_churchInput
+}
+
+input ChurchUpdateOneWithout_floorsInput {
+  create: ChurchCreateWithout_floorsInput
+  connect: ChurchWhereUniqueInput
+  delete: Boolean
+  update: ChurchUpdateWithout_floorsDataInput
+  upsert: ChurchUpsertWithout_floorsInput
+}
+
+input ChurchUpdateWithout_floorsDataInput {
+  domain: String
+  name: String
+}
+
+input ChurchUpsertWithout_floorsInput {
+  update: ChurchUpdateWithout_floorsDataInput!
+  create: ChurchCreateWithout_floorsInput!
+}
+
+input ChurchWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ChurchWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ChurchWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ChurchWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  domain: String
+
+  """All values that are not equal to given value."""
+  domain_not: String
+
+  """All values that are contained in given list."""
+  domain_in: [String!]
+
+  """All values that are not contained in given list."""
+  domain_not_in: [String!]
+
+  """All values less than the given value."""
+  domain_lt: String
+
+  """All values less than or equal the given value."""
+  domain_lte: String
+
+  """All values greater than the given value."""
+  domain_gt: String
+
+  """All values greater than or equal the given value."""
+  domain_gte: String
+
+  """All values containing the given string."""
+  domain_contains: String
+
+  """All values not containing the given string."""
+  domain_not_contains: String
+
+  """All values starting with the given string."""
+  domain_starts_with: String
+
+  """All values not starting with the given string."""
+  domain_not_starts_with: String
+
+  """All values ending with the given string."""
+  domain_ends_with: String
+
+  """All values not ending with the given string."""
+  domain_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  _floors_every: FloorWhereInput
+  _floors_some: FloorWhereInput
+  _floors_none: FloorWhereInput
+}
+
+input ChurchWhereUniqueInput {
+  id: ID
+  domain: String
+}
+
 scalar DateTime
+
+type Department implements Node {
+  id: ID!
+  domain: String!
+  _leader(where: DiscipleWhereInput): Disciple!
+  _rooms(where: RoomWhereInput, orderBy: RoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Room!]
+  _disciples(where: DiscipleWhereInput, orderBy: DiscipleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Disciple!]
+}
+
+"""A connection to a list of items."""
+type DepartmentConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DepartmentEdge]!
+  aggregate: AggregateDepartment!
+}
+
+input DepartmentCreateInput {
+  domain: String!
+  _leader: DiscipleCreateOneWithout_departmentLeaderInput!
+  _rooms: RoomCreateManyWithout_departmentsInput
+  _disciples: DiscipleCreateManyWithout_memberOfInput
+}
+
+input DepartmentCreateManyWithout_roomsInput {
+  create: [DepartmentCreateWithout_roomsInput!]
+  connect: [DepartmentWhereUniqueInput!]
+}
+
+input DepartmentCreateOneWithout_disciplesInput {
+  create: DepartmentCreateWithout_disciplesInput
+  connect: DepartmentWhereUniqueInput
+}
+
+input DepartmentCreateOneWithout_leaderInput {
+  create: DepartmentCreateWithout_leaderInput
+  connect: DepartmentWhereUniqueInput
+}
+
+input DepartmentCreateWithout_disciplesInput {
+  domain: String!
+  _leader: DiscipleCreateOneWithout_departmentLeaderInput!
+  _rooms: RoomCreateManyWithout_departmentsInput
+}
+
+input DepartmentCreateWithout_leaderInput {
+  domain: String!
+  _rooms: RoomCreateManyWithout_departmentsInput
+  _disciples: DiscipleCreateManyWithout_memberOfInput
+}
+
+input DepartmentCreateWithout_roomsInput {
+  domain: String!
+  _leader: DiscipleCreateOneWithout_departmentLeaderInput!
+  _disciples: DiscipleCreateManyWithout_memberOfInput
+}
+
+"""An edge in a connection."""
+type DepartmentEdge {
+  """The item at the end of the edge."""
+  node: Department!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum DepartmentOrderByInput {
+  id_ASC
+  id_DESC
+  domain_ASC
+  domain_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type DepartmentPreviousValues {
+  id: ID!
+  domain: String!
+}
+
+type DepartmentSubscriptionPayload {
+  mutation: MutationType!
+  node: Department
+  updatedFields: [String!]
+  previousValues: DepartmentPreviousValues
+}
+
+input DepartmentSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DepartmentSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DepartmentSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DepartmentSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DepartmentWhereInput
+}
+
+input DepartmentUpdateInput {
+  domain: String
+  _leader: DiscipleUpdateOneWithout_departmentLeaderInput
+  _rooms: RoomUpdateManyWithout_departmentsInput
+  _disciples: DiscipleUpdateManyWithout_memberOfInput
+}
+
+input DepartmentUpdateManyWithout_roomsInput {
+  create: [DepartmentCreateWithout_roomsInput!]
+  connect: [DepartmentWhereUniqueInput!]
+  disconnect: [DepartmentWhereUniqueInput!]
+  delete: [DepartmentWhereUniqueInput!]
+  update: [DepartmentUpdateWithWhereUniqueWithout_roomsInput!]
+  upsert: [DepartmentUpsertWithWhereUniqueWithout_roomsInput!]
+}
+
+input DepartmentUpdateOneWithout_disciplesInput {
+  create: DepartmentCreateWithout_disciplesInput
+  connect: DepartmentWhereUniqueInput
+  delete: Boolean
+  update: DepartmentUpdateWithout_disciplesDataInput
+  upsert: DepartmentUpsertWithout_disciplesInput
+}
+
+input DepartmentUpdateOneWithout_leaderInput {
+  create: DepartmentCreateWithout_leaderInput
+  connect: DepartmentWhereUniqueInput
+  delete: Boolean
+  update: DepartmentUpdateWithout_leaderDataInput
+  upsert: DepartmentUpsertWithout_leaderInput
+}
+
+input DepartmentUpdateWithout_disciplesDataInput {
+  domain: String
+  _leader: DiscipleUpdateOneWithout_departmentLeaderInput
+  _rooms: RoomUpdateManyWithout_departmentsInput
+}
+
+input DepartmentUpdateWithout_leaderDataInput {
+  domain: String
+  _rooms: RoomUpdateManyWithout_departmentsInput
+  _disciples: DiscipleUpdateManyWithout_memberOfInput
+}
+
+input DepartmentUpdateWithout_roomsDataInput {
+  domain: String
+  _leader: DiscipleUpdateOneWithout_departmentLeaderInput
+  _disciples: DiscipleUpdateManyWithout_memberOfInput
+}
+
+input DepartmentUpdateWithWhereUniqueWithout_roomsInput {
+  where: DepartmentWhereUniqueInput!
+  data: DepartmentUpdateWithout_roomsDataInput!
+}
+
+input DepartmentUpsertWithout_disciplesInput {
+  update: DepartmentUpdateWithout_disciplesDataInput!
+  create: DepartmentCreateWithout_disciplesInput!
+}
+
+input DepartmentUpsertWithout_leaderInput {
+  update: DepartmentUpdateWithout_leaderDataInput!
+  create: DepartmentCreateWithout_leaderInput!
+}
+
+input DepartmentUpsertWithWhereUniqueWithout_roomsInput {
+  where: DepartmentWhereUniqueInput!
+  update: DepartmentUpdateWithout_roomsDataInput!
+  create: DepartmentCreateWithout_roomsInput!
+}
+
+input DepartmentWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DepartmentWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DepartmentWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DepartmentWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  domain: String
+
+  """All values that are not equal to given value."""
+  domain_not: String
+
+  """All values that are contained in given list."""
+  domain_in: [String!]
+
+  """All values that are not contained in given list."""
+  domain_not_in: [String!]
+
+  """All values less than the given value."""
+  domain_lt: String
+
+  """All values less than or equal the given value."""
+  domain_lte: String
+
+  """All values greater than the given value."""
+  domain_gt: String
+
+  """All values greater than or equal the given value."""
+  domain_gte: String
+
+  """All values containing the given string."""
+  domain_contains: String
+
+  """All values not containing the given string."""
+  domain_not_contains: String
+
+  """All values starting with the given string."""
+  domain_starts_with: String
+
+  """All values not starting with the given string."""
+  domain_not_starts_with: String
+
+  """All values ending with the given string."""
+  domain_ends_with: String
+
+  """All values not ending with the given string."""
+  domain_not_ends_with: String
+  _leader: DiscipleWhereInput
+  _rooms_every: RoomWhereInput
+  _rooms_some: RoomWhereInput
+  _rooms_none: RoomWhereInput
+  _disciples_every: DiscipleWhereInput
+  _disciples_some: DiscipleWhereInput
+  _disciples_none: DiscipleWhereInput
+}
+
+input DepartmentWhereUniqueInput {
+  id: ID
+  domain: String
+}
+
+type Disciple implements Node {
+  id: ID!
+  fullname: String!
+  firstName: String!
+  lastName: String!
+  _departmentLeader(where: DepartmentWhereInput): Department!
+  _memberOf(where: DepartmentWhereInput): Department!
+}
+
+"""A connection to a list of items."""
+type DiscipleConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DiscipleEdge]!
+  aggregate: AggregateDisciple!
+}
+
+input DiscipleCreateInput {
+  fullname: String!
+  firstName: String!
+  lastName: String!
+  _departmentLeader: DepartmentCreateOneWithout_leaderInput!
+  _memberOf: DepartmentCreateOneWithout_disciplesInput!
+}
+
+input DiscipleCreateManyWithout_memberOfInput {
+  create: [DiscipleCreateWithout_memberOfInput!]
+  connect: [DiscipleWhereUniqueInput!]
+}
+
+input DiscipleCreateOneWithout_departmentLeaderInput {
+  create: DiscipleCreateWithout_departmentLeaderInput
+  connect: DiscipleWhereUniqueInput
+}
+
+input DiscipleCreateWithout_departmentLeaderInput {
+  fullname: String!
+  firstName: String!
+  lastName: String!
+  _memberOf: DepartmentCreateOneWithout_disciplesInput!
+}
+
+input DiscipleCreateWithout_memberOfInput {
+  fullname: String!
+  firstName: String!
+  lastName: String!
+  _departmentLeader: DepartmentCreateOneWithout_leaderInput!
+}
+
+"""An edge in a connection."""
+type DiscipleEdge {
+  """The item at the end of the edge."""
+  node: Disciple!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum DiscipleOrderByInput {
+  id_ASC
+  id_DESC
+  fullname_ASC
+  fullname_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type DisciplePreviousValues {
+  id: ID!
+  fullname: String!
+  firstName: String!
+  lastName: String!
+}
+
+type DiscipleSubscriptionPayload {
+  mutation: MutationType!
+  node: Disciple
+  updatedFields: [String!]
+  previousValues: DisciplePreviousValues
+}
+
+input DiscipleSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiscipleSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiscipleSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiscipleSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DiscipleWhereInput
+}
+
+input DiscipleUpdateInput {
+  fullname: String
+  firstName: String
+  lastName: String
+  _departmentLeader: DepartmentUpdateOneWithout_leaderInput
+  _memberOf: DepartmentUpdateOneWithout_disciplesInput
+}
+
+input DiscipleUpdateManyWithout_memberOfInput {
+  create: [DiscipleCreateWithout_memberOfInput!]
+  connect: [DiscipleWhereUniqueInput!]
+  disconnect: [DiscipleWhereUniqueInput!]
+  delete: [DiscipleWhereUniqueInput!]
+  update: [DiscipleUpdateWithWhereUniqueWithout_memberOfInput!]
+  upsert: [DiscipleUpsertWithWhereUniqueWithout_memberOfInput!]
+}
+
+input DiscipleUpdateOneWithout_departmentLeaderInput {
+  create: DiscipleCreateWithout_departmentLeaderInput
+  connect: DiscipleWhereUniqueInput
+  delete: Boolean
+  update: DiscipleUpdateWithout_departmentLeaderDataInput
+  upsert: DiscipleUpsertWithout_departmentLeaderInput
+}
+
+input DiscipleUpdateWithout_departmentLeaderDataInput {
+  fullname: String
+  firstName: String
+  lastName: String
+  _memberOf: DepartmentUpdateOneWithout_disciplesInput
+}
+
+input DiscipleUpdateWithout_memberOfDataInput {
+  fullname: String
+  firstName: String
+  lastName: String
+  _departmentLeader: DepartmentUpdateOneWithout_leaderInput
+}
+
+input DiscipleUpdateWithWhereUniqueWithout_memberOfInput {
+  where: DiscipleWhereUniqueInput!
+  data: DiscipleUpdateWithout_memberOfDataInput!
+}
+
+input DiscipleUpsertWithout_departmentLeaderInput {
+  update: DiscipleUpdateWithout_departmentLeaderDataInput!
+  create: DiscipleCreateWithout_departmentLeaderInput!
+}
+
+input DiscipleUpsertWithWhereUniqueWithout_memberOfInput {
+  where: DiscipleWhereUniqueInput!
+  update: DiscipleUpdateWithout_memberOfDataInput!
+  create: DiscipleCreateWithout_memberOfInput!
+}
+
+input DiscipleWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DiscipleWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [DiscipleWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [DiscipleWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  fullname: String
+
+  """All values that are not equal to given value."""
+  fullname_not: String
+
+  """All values that are contained in given list."""
+  fullname_in: [String!]
+
+  """All values that are not contained in given list."""
+  fullname_not_in: [String!]
+
+  """All values less than the given value."""
+  fullname_lt: String
+
+  """All values less than or equal the given value."""
+  fullname_lte: String
+
+  """All values greater than the given value."""
+  fullname_gt: String
+
+  """All values greater than or equal the given value."""
+  fullname_gte: String
+
+  """All values containing the given string."""
+  fullname_contains: String
+
+  """All values not containing the given string."""
+  fullname_not_contains: String
+
+  """All values starting with the given string."""
+  fullname_starts_with: String
+
+  """All values not starting with the given string."""
+  fullname_not_starts_with: String
+
+  """All values ending with the given string."""
+  fullname_ends_with: String
+
+  """All values not ending with the given string."""
+  fullname_not_ends_with: String
+  firstName: String
+
+  """All values that are not equal to given value."""
+  firstName_not: String
+
+  """All values that are contained in given list."""
+  firstName_in: [String!]
+
+  """All values that are not contained in given list."""
+  firstName_not_in: [String!]
+
+  """All values less than the given value."""
+  firstName_lt: String
+
+  """All values less than or equal the given value."""
+  firstName_lte: String
+
+  """All values greater than the given value."""
+  firstName_gt: String
+
+  """All values greater than or equal the given value."""
+  firstName_gte: String
+
+  """All values containing the given string."""
+  firstName_contains: String
+
+  """All values not containing the given string."""
+  firstName_not_contains: String
+
+  """All values starting with the given string."""
+  firstName_starts_with: String
+
+  """All values not starting with the given string."""
+  firstName_not_starts_with: String
+
+  """All values ending with the given string."""
+  firstName_ends_with: String
+
+  """All values not ending with the given string."""
+  firstName_not_ends_with: String
+  lastName: String
+
+  """All values that are not equal to given value."""
+  lastName_not: String
+
+  """All values that are contained in given list."""
+  lastName_in: [String!]
+
+  """All values that are not contained in given list."""
+  lastName_not_in: [String!]
+
+  """All values less than the given value."""
+  lastName_lt: String
+
+  """All values less than or equal the given value."""
+  lastName_lte: String
+
+  """All values greater than the given value."""
+  lastName_gt: String
+
+  """All values greater than or equal the given value."""
+  lastName_gte: String
+
+  """All values containing the given string."""
+  lastName_contains: String
+
+  """All values not containing the given string."""
+  lastName_not_contains: String
+
+  """All values starting with the given string."""
+  lastName_starts_with: String
+
+  """All values not starting with the given string."""
+  lastName_not_starts_with: String
+
+  """All values ending with the given string."""
+  lastName_ends_with: String
+
+  """All values not ending with the given string."""
+  lastName_not_ends_with: String
+  _departmentLeader: DepartmentWhereInput
+  _memberOf: DepartmentWhereInput
+}
+
+input DiscipleWhereUniqueInput {
+  id: ID
+  fullname: String
+}
+
+type Floor implements Node {
+  id: ID!
+  domain: String!
+  name: String!
+  _church(where: ChurchWhereInput): Church!
+  _rooms(where: RoomWhereInput, orderBy: RoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Room!]
+}
+
+"""A connection to a list of items."""
+type FloorConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FloorEdge]!
+  aggregate: AggregateFloor!
+}
+
+input FloorCreateInput {
+  domain: String!
+  name: String!
+  _church: ChurchCreateOneWithout_floorsInput!
+  _rooms: RoomCreateManyWithout_floorInput
+}
+
+input FloorCreateManyWithout_churchInput {
+  create: [FloorCreateWithout_churchInput!]
+  connect: [FloorWhereUniqueInput!]
+}
+
+input FloorCreateOneWithout_roomsInput {
+  create: FloorCreateWithout_roomsInput
+  connect: FloorWhereUniqueInput
+}
+
+input FloorCreateWithout_churchInput {
+  domain: String!
+  name: String!
+  _rooms: RoomCreateManyWithout_floorInput
+}
+
+input FloorCreateWithout_roomsInput {
+  domain: String!
+  name: String!
+  _church: ChurchCreateOneWithout_floorsInput!
+}
+
+"""An edge in a connection."""
+type FloorEdge {
+  """The item at the end of the edge."""
+  node: Floor!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum FloorOrderByInput {
+  id_ASC
+  id_DESC
+  domain_ASC
+  domain_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type FloorPreviousValues {
+  id: ID!
+  domain: String!
+  name: String!
+}
+
+type FloorSubscriptionPayload {
+  mutation: MutationType!
+  node: Floor
+  updatedFields: [String!]
+  previousValues: FloorPreviousValues
+}
+
+input FloorSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FloorSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FloorSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FloorSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: FloorWhereInput
+}
+
+input FloorUpdateInput {
+  domain: String
+  name: String
+  _church: ChurchUpdateOneWithout_floorsInput
+  _rooms: RoomUpdateManyWithout_floorInput
+}
+
+input FloorUpdateManyWithout_churchInput {
+  create: [FloorCreateWithout_churchInput!]
+  connect: [FloorWhereUniqueInput!]
+  disconnect: [FloorWhereUniqueInput!]
+  delete: [FloorWhereUniqueInput!]
+  update: [FloorUpdateWithWhereUniqueWithout_churchInput!]
+  upsert: [FloorUpsertWithWhereUniqueWithout_churchInput!]
+}
+
+input FloorUpdateOneWithout_roomsInput {
+  create: FloorCreateWithout_roomsInput
+  connect: FloorWhereUniqueInput
+  delete: Boolean
+  update: FloorUpdateWithout_roomsDataInput
+  upsert: FloorUpsertWithout_roomsInput
+}
+
+input FloorUpdateWithout_churchDataInput {
+  domain: String
+  name: String
+  _rooms: RoomUpdateManyWithout_floorInput
+}
+
+input FloorUpdateWithout_roomsDataInput {
+  domain: String
+  name: String
+  _church: ChurchUpdateOneWithout_floorsInput
+}
+
+input FloorUpdateWithWhereUniqueWithout_churchInput {
+  where: FloorWhereUniqueInput!
+  data: FloorUpdateWithout_churchDataInput!
+}
+
+input FloorUpsertWithout_roomsInput {
+  update: FloorUpdateWithout_roomsDataInput!
+  create: FloorCreateWithout_roomsInput!
+}
+
+input FloorUpsertWithWhereUniqueWithout_churchInput {
+  where: FloorWhereUniqueInput!
+  update: FloorUpdateWithout_churchDataInput!
+  create: FloorCreateWithout_churchInput!
+}
+
+input FloorWhereInput {
+  """Logical AND on all given filters."""
+  AND: [FloorWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [FloorWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [FloorWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  domain: String
+
+  """All values that are not equal to given value."""
+  domain_not: String
+
+  """All values that are contained in given list."""
+  domain_in: [String!]
+
+  """All values that are not contained in given list."""
+  domain_not_in: [String!]
+
+  """All values less than the given value."""
+  domain_lt: String
+
+  """All values less than or equal the given value."""
+  domain_lte: String
+
+  """All values greater than the given value."""
+  domain_gt: String
+
+  """All values greater than or equal the given value."""
+  domain_gte: String
+
+  """All values containing the given string."""
+  domain_contains: String
+
+  """All values not containing the given string."""
+  domain_not_contains: String
+
+  """All values starting with the given string."""
+  domain_starts_with: String
+
+  """All values not starting with the given string."""
+  domain_not_starts_with: String
+
+  """All values ending with the given string."""
+  domain_ends_with: String
+
+  """All values not ending with the given string."""
+  domain_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  _church: ChurchWhereInput
+  _rooms_every: RoomWhereInput
+  _rooms_some: RoomWhereInput
+  _rooms_none: RoomWhereInput
+}
+
+input FloorWhereUniqueInput {
+  id: ID
+  domain: String
+}
 
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
@@ -23,16 +1262,46 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createChurch(data: ChurchCreateInput!): Church!
+  createFloor(data: FloorCreateInput!): Floor!
+  createRoom(data: RoomCreateInput!): Room!
+  createDepartment(data: DepartmentCreateInput!): Department!
+  createDisciple(data: DiscipleCreateInput!): Disciple!
   createPost(data: PostCreateInput!): Post!
   createUser(data: UserCreateInput!): User!
+  updateChurch(data: ChurchUpdateInput!, where: ChurchWhereUniqueInput!): Church
+  updateFloor(data: FloorUpdateInput!, where: FloorWhereUniqueInput!): Floor
+  updateRoom(data: RoomUpdateInput!, where: RoomWhereUniqueInput!): Room
+  updateDepartment(data: DepartmentUpdateInput!, where: DepartmentWhereUniqueInput!): Department
+  updateDisciple(data: DiscipleUpdateInput!, where: DiscipleWhereUniqueInput!): Disciple
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  deleteChurch(where: ChurchWhereUniqueInput!): Church
+  deleteFloor(where: FloorWhereUniqueInput!): Floor
+  deleteRoom(where: RoomWhereUniqueInput!): Room
+  deleteDepartment(where: DepartmentWhereUniqueInput!): Department
+  deleteDisciple(where: DiscipleWhereUniqueInput!): Disciple
   deletePost(where: PostWhereUniqueInput!): Post
   deleteUser(where: UserWhereUniqueInput!): User
+  upsertChurch(where: ChurchWhereUniqueInput!, create: ChurchCreateInput!, update: ChurchUpdateInput!): Church!
+  upsertFloor(where: FloorWhereUniqueInput!, create: FloorCreateInput!, update: FloorUpdateInput!): Floor!
+  upsertRoom(where: RoomWhereUniqueInput!, create: RoomCreateInput!, update: RoomUpdateInput!): Room!
+  upsertDepartment(where: DepartmentWhereUniqueInput!, create: DepartmentCreateInput!, update: DepartmentUpdateInput!): Department!
+  upsertDisciple(where: DiscipleWhereUniqueInput!, create: DiscipleCreateInput!, update: DiscipleUpdateInput!): Disciple!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  updateManyChurches(data: ChurchUpdateInput!, where: ChurchWhereInput): BatchPayload!
+  updateManyFloors(data: FloorUpdateInput!, where: FloorWhereInput): BatchPayload!
+  updateManyRooms(data: RoomUpdateInput!, where: RoomWhereInput): BatchPayload!
+  updateManyDepartments(data: DepartmentUpdateInput!, where: DepartmentWhereInput): BatchPayload!
+  updateManyDisciples(data: DiscipleUpdateInput!, where: DiscipleWhereInput): BatchPayload!
   updateManyPosts(data: PostUpdateInput!, where: PostWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  deleteManyChurches(where: ChurchWhereInput): BatchPayload!
+  deleteManyFloors(where: FloorWhereInput): BatchPayload!
+  deleteManyRooms(where: RoomWhereInput): BatchPayload!
+  deleteManyDepartments(where: DepartmentWhereInput): BatchPayload!
+  deleteManyDisciples(where: DiscipleWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
@@ -392,10 +1661,25 @@ input PostWhereUniqueInput {
 }
 
 type Query {
+  churches(where: ChurchWhereInput, orderBy: ChurchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Church]!
+  floors(where: FloorWhereInput, orderBy: FloorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Floor]!
+  rooms(where: RoomWhereInput, orderBy: RoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Room]!
+  departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department]!
+  disciples(where: DiscipleWhereInput, orderBy: DiscipleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Disciple]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  church(where: ChurchWhereUniqueInput!): Church
+  floor(where: FloorWhereUniqueInput!): Floor
+  room(where: RoomWhereUniqueInput!): Room
+  department(where: DepartmentWhereUniqueInput!): Department
+  disciple(where: DiscipleWhereUniqueInput!): Disciple
   post(where: PostWhereUniqueInput!): Post
   user(where: UserWhereUniqueInput!): User
+  churchesConnection(where: ChurchWhereInput, orderBy: ChurchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChurchConnection!
+  floorsConnection(where: FloorWhereInput, orderBy: FloorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FloorConnection!
+  roomsConnection(where: RoomWhereInput, orderBy: RoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RoomConnection!
+  departmentsConnection(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DepartmentConnection!
+  disciplesConnection(where: DiscipleWhereInput, orderBy: DiscipleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiscipleConnection!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
@@ -406,7 +1690,325 @@ type Query {
   ): Node
 }
 
+type Room implements Node {
+  id: ID!
+  domain: String!
+  name: String!
+  _floor(where: FloorWhereInput): Floor!
+  _departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department!]
+}
+
+"""A connection to a list of items."""
+type RoomConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [RoomEdge]!
+  aggregate: AggregateRoom!
+}
+
+input RoomCreateInput {
+  domain: String!
+  name: String!
+  _floor: FloorCreateOneWithout_roomsInput!
+  _departments: DepartmentCreateManyWithout_roomsInput
+}
+
+input RoomCreateManyWithout_departmentsInput {
+  create: [RoomCreateWithout_departmentsInput!]
+  connect: [RoomWhereUniqueInput!]
+}
+
+input RoomCreateManyWithout_floorInput {
+  create: [RoomCreateWithout_floorInput!]
+  connect: [RoomWhereUniqueInput!]
+}
+
+input RoomCreateWithout_departmentsInput {
+  domain: String!
+  name: String!
+  _floor: FloorCreateOneWithout_roomsInput!
+}
+
+input RoomCreateWithout_floorInput {
+  domain: String!
+  name: String!
+  _departments: DepartmentCreateManyWithout_roomsInput
+}
+
+"""An edge in a connection."""
+type RoomEdge {
+  """The item at the end of the edge."""
+  node: Room!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum RoomOrderByInput {
+  id_ASC
+  id_DESC
+  domain_ASC
+  domain_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type RoomPreviousValues {
+  id: ID!
+  domain: String!
+  name: String!
+}
+
+type RoomSubscriptionPayload {
+  mutation: MutationType!
+  node: Room
+  updatedFields: [String!]
+  previousValues: RoomPreviousValues
+}
+
+input RoomSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RoomSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RoomSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RoomSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: RoomWhereInput
+}
+
+input RoomUpdateInput {
+  domain: String
+  name: String
+  _floor: FloorUpdateOneWithout_roomsInput
+  _departments: DepartmentUpdateManyWithout_roomsInput
+}
+
+input RoomUpdateManyWithout_departmentsInput {
+  create: [RoomCreateWithout_departmentsInput!]
+  connect: [RoomWhereUniqueInput!]
+  disconnect: [RoomWhereUniqueInput!]
+  delete: [RoomWhereUniqueInput!]
+  update: [RoomUpdateWithWhereUniqueWithout_departmentsInput!]
+  upsert: [RoomUpsertWithWhereUniqueWithout_departmentsInput!]
+}
+
+input RoomUpdateManyWithout_floorInput {
+  create: [RoomCreateWithout_floorInput!]
+  connect: [RoomWhereUniqueInput!]
+  disconnect: [RoomWhereUniqueInput!]
+  delete: [RoomWhereUniqueInput!]
+  update: [RoomUpdateWithWhereUniqueWithout_floorInput!]
+  upsert: [RoomUpsertWithWhereUniqueWithout_floorInput!]
+}
+
+input RoomUpdateWithout_departmentsDataInput {
+  domain: String
+  name: String
+  _floor: FloorUpdateOneWithout_roomsInput
+}
+
+input RoomUpdateWithout_floorDataInput {
+  domain: String
+  name: String
+  _departments: DepartmentUpdateManyWithout_roomsInput
+}
+
+input RoomUpdateWithWhereUniqueWithout_departmentsInput {
+  where: RoomWhereUniqueInput!
+  data: RoomUpdateWithout_departmentsDataInput!
+}
+
+input RoomUpdateWithWhereUniqueWithout_floorInput {
+  where: RoomWhereUniqueInput!
+  data: RoomUpdateWithout_floorDataInput!
+}
+
+input RoomUpsertWithWhereUniqueWithout_departmentsInput {
+  where: RoomWhereUniqueInput!
+  update: RoomUpdateWithout_departmentsDataInput!
+  create: RoomCreateWithout_departmentsInput!
+}
+
+input RoomUpsertWithWhereUniqueWithout_floorInput {
+  where: RoomWhereUniqueInput!
+  update: RoomUpdateWithout_floorDataInput!
+  create: RoomCreateWithout_floorInput!
+}
+
+input RoomWhereInput {
+  """Logical AND on all given filters."""
+  AND: [RoomWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [RoomWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [RoomWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  domain: String
+
+  """All values that are not equal to given value."""
+  domain_not: String
+
+  """All values that are contained in given list."""
+  domain_in: [String!]
+
+  """All values that are not contained in given list."""
+  domain_not_in: [String!]
+
+  """All values less than the given value."""
+  domain_lt: String
+
+  """All values less than or equal the given value."""
+  domain_lte: String
+
+  """All values greater than the given value."""
+  domain_gt: String
+
+  """All values greater than or equal the given value."""
+  domain_gte: String
+
+  """All values containing the given string."""
+  domain_contains: String
+
+  """All values not containing the given string."""
+  domain_not_contains: String
+
+  """All values starting with the given string."""
+  domain_starts_with: String
+
+  """All values not starting with the given string."""
+  domain_not_starts_with: String
+
+  """All values ending with the given string."""
+  domain_ends_with: String
+
+  """All values not ending with the given string."""
+  domain_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  _floor: FloorWhereInput
+  _departments_every: DepartmentWhereInput
+  _departments_some: DepartmentWhereInput
+  _departments_none: DepartmentWhereInput
+}
+
+input RoomWhereUniqueInput {
+  id: ID
+  domain: String
+}
+
 type Subscription {
+  church(where: ChurchSubscriptionWhereInput): ChurchSubscriptionPayload
+  floor(where: FloorSubscriptionWhereInput): FloorSubscriptionPayload
+  room(where: RoomSubscriptionWhereInput): RoomSubscriptionPayload
+  department(where: DepartmentSubscriptionWhereInput): DepartmentSubscriptionPayload
+  disciple(where: DiscipleSubscriptionWhereInput): DiscipleSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

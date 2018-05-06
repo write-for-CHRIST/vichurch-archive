@@ -1,3 +1,43 @@
+type Church {
+  id: ID! @unique
+  domain: String! @unique
+  name: String!
+  _floors: [Floor!]! @relation(name: "ChurchFloor")
+}
+
+type Floor {
+  id: ID! @unique
+  domain: String! @unique
+  name: String!
+  _church: Church! @relation(name: "ChurchFloor")
+  _rooms: [Room!]! @relation(name: "FloorRoom")
+}
+
+type Room {
+  id: ID! @unique
+  domain: String! @unique
+  name: String!
+  _floor: Floor! @relation(name: "FloorRoom")
+  _departments: [Department!]! @relation(name: "DepartmentRoom")
+}
+
+type Department {
+  id: ID! @unique
+  domain: String! @unique
+  _leader: Disciple! @relation(name: "DepartmentLeader")
+  _rooms: [Room!]! @relation(name: "DepartmentRoom")
+  _disciples: [Disciple!]! @relation(name: "DepartmentDisciple")
+}
+
+type Disciple {
+  id: ID! @unique
+  fullname: String! @unique
+  firstName: String!
+  lastName: String!
+  _departmentLeader: Department! @relation(name: "DepartmentLeader")
+  _memberOf: Department! @relation(name: "DepartmentDisciple")
+}
+
 type Post {
   id: ID! @unique
   createdAt: DateTime!
