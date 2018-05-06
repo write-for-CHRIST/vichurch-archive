@@ -52,6 +52,10 @@ npm install
 yarn build
 ```
 
+* The first time run: `yarn start`
+
+This process will initialize the database which take a few seconds, that Prisma service won't wait enough for MySQL service to be ready. What you have to do is wait until every service go to idle state (not emitting new log in console) and press `Ctrl + C` to stop all the running services and restart it again by going to next step below.
+
 * Start all development services:
 
 ```bash
