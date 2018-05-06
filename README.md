@@ -45,7 +45,7 @@ yarn
 npm install
 ```
 
-* Modify environment value in these files: `build.env` and `container.env`. See (#environment-variables) for more details.
+* Modify environment value in these files: `build.env` and `container.env`. See [Environment Variables](#environment-variables) for more details.
 
 * Build docker image using `docker-compose`:
 ```bash
