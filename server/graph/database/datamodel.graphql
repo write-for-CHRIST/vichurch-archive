@@ -36,6 +36,30 @@ type Disciple {
   lastName: String!
   _departmentLeader: Department! @relation(name: "DepartmentLeader")
   _memberOf: Department! @relation(name: "DepartmentDisciple")
+  # _user: User @relation(name: "UserDisciple")
+}
+
+type Booking {
+  id: ID! @unique
+  createdAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
+  # _bookee: User! @relation(name: "UserBooking")
+  _room: Room! @relation(name: "RoomBooking")
+  _info: BookingInfo! @relation(name: "InfoBooking")
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+type BookingInfo {
+  id: ID! @unique
+  status: BookingStatus!
+  # _approver: User! @relation(name: "ApproverBooking")
+  _booking: Booking! @relation(name: "InfoBooking")
 }
 
 type Post {
@@ -45,7 +69,7 @@ type Post {
   isPublished: Boolean! @default(value: "false")
   title: String!
   text: String!
-  author: User!
+  author: User! @relation(name: "UserPost")
 }
 
 type User {
@@ -53,5 +77,8 @@ type User {
   email: String! @unique
   password: String!
   name: String!
-  posts: [Post!]!
+  posts: [Post!]! @relation(name: "UserPost")
+  # _bookings: [Booking!]! @relation(name: "UserBooking")
+  # _disciple: Disciple! @relation(name: "UserDisciple")
+  # _approved: [BookingInfo!]! @relation(name: "ApproverBooking")
 }

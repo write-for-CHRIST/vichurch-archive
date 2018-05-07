@@ -1,5 +1,13 @@
 # source: http://localhost:4466
-# timestamp: Sun May 06 2018 23:16:43 GMT+0700 (+07)
+# timestamp: Mon May 07 2018 22:34:29 GMT+0700 (+07)
+
+type AggregateBooking {
+  count: Int!
+}
+
+type AggregateBookingInfo {
+  count: Int!
+}
 
 type AggregateChurch {
   count: Int!
@@ -32,6 +40,448 @@ type AggregateUser {
 type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
+}
+
+type Booking implements Node {
+  id: ID!
+  createdAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
+  _room(where: RoomWhereInput): Room!
+  _info(where: BookingInfoWhereInput): BookingInfo!
+}
+
+"""A connection to a list of items."""
+type BookingConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BookingEdge]!
+  aggregate: AggregateBooking!
+}
+
+input BookingCreateInput {
+  startDate: DateTime!
+  endDate: DateTime!
+  _room: RoomCreateOneInput!
+  _info: BookingInfoCreateOneWithout_bookingInput!
+}
+
+input BookingCreateOneWithout_infoInput {
+  create: BookingCreateWithout_infoInput
+  connect: BookingWhereUniqueInput
+}
+
+input BookingCreateWithout_infoInput {
+  startDate: DateTime!
+  endDate: DateTime!
+  _room: RoomCreateOneInput!
+}
+
+"""An edge in a connection."""
+type BookingEdge {
+  """The item at the end of the edge."""
+  node: Booking!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type BookingInfo implements Node {
+  id: ID!
+  status: BookingStatus!
+  _booking(where: BookingWhereInput): Booking!
+}
+
+"""A connection to a list of items."""
+type BookingInfoConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BookingInfoEdge]!
+  aggregate: AggregateBookingInfo!
+}
+
+input BookingInfoCreateInput {
+  status: BookingStatus!
+  _booking: BookingCreateOneWithout_infoInput!
+}
+
+input BookingInfoCreateOneWithout_bookingInput {
+  create: BookingInfoCreateWithout_bookingInput
+  connect: BookingInfoWhereUniqueInput
+}
+
+input BookingInfoCreateWithout_bookingInput {
+  status: BookingStatus!
+}
+
+"""An edge in a connection."""
+type BookingInfoEdge {
+  """The item at the end of the edge."""
+  node: BookingInfo!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum BookingInfoOrderByInput {
+  id_ASC
+  id_DESC
+  status_ASC
+  status_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type BookingInfoPreviousValues {
+  id: ID!
+  status: BookingStatus!
+}
+
+type BookingInfoSubscriptionPayload {
+  mutation: MutationType!
+  node: BookingInfo
+  updatedFields: [String!]
+  previousValues: BookingInfoPreviousValues
+}
+
+input BookingInfoSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BookingInfoSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BookingInfoSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BookingInfoSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: BookingInfoWhereInput
+}
+
+input BookingInfoUpdateInput {
+  status: BookingStatus
+  _booking: BookingUpdateOneWithout_infoInput
+}
+
+input BookingInfoUpdateOneWithout_bookingInput {
+  create: BookingInfoCreateWithout_bookingInput
+  connect: BookingInfoWhereUniqueInput
+  delete: Boolean
+  update: BookingInfoUpdateWithout_bookingDataInput
+  upsert: BookingInfoUpsertWithout_bookingInput
+}
+
+input BookingInfoUpdateWithout_bookingDataInput {
+  status: BookingStatus
+}
+
+input BookingInfoUpsertWithout_bookingInput {
+  update: BookingInfoUpdateWithout_bookingDataInput!
+  create: BookingInfoCreateWithout_bookingInput!
+}
+
+input BookingInfoWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BookingInfoWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BookingInfoWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BookingInfoWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  status: BookingStatus
+
+  """All values that are not equal to given value."""
+  status_not: BookingStatus
+
+  """All values that are contained in given list."""
+  status_in: [BookingStatus!]
+
+  """All values that are not contained in given list."""
+  status_not_in: [BookingStatus!]
+  _booking: BookingWhereInput
+}
+
+input BookingInfoWhereUniqueInput {
+  id: ID
+}
+
+enum BookingOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  startDate_ASC
+  startDate_DESC
+  endDate_ASC
+  endDate_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type BookingPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+type BookingSubscriptionPayload {
+  mutation: MutationType!
+  node: Booking
+  updatedFields: [String!]
+  previousValues: BookingPreviousValues
+}
+
+input BookingSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BookingSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BookingSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BookingSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: BookingWhereInput
+}
+
+input BookingUpdateInput {
+  startDate: DateTime
+  endDate: DateTime
+  _room: RoomUpdateOneInput
+  _info: BookingInfoUpdateOneWithout_bookingInput
+}
+
+input BookingUpdateOneWithout_infoInput {
+  create: BookingCreateWithout_infoInput
+  connect: BookingWhereUniqueInput
+  delete: Boolean
+  update: BookingUpdateWithout_infoDataInput
+  upsert: BookingUpsertWithout_infoInput
+}
+
+input BookingUpdateWithout_infoDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  _room: RoomUpdateOneInput
+}
+
+input BookingUpsertWithout_infoInput {
+  update: BookingUpdateWithout_infoDataInput!
+  create: BookingCreateWithout_infoInput!
+}
+
+input BookingWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BookingWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [BookingWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [BookingWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  startDate: DateTime
+
+  """All values that are not equal to given value."""
+  startDate_not: DateTime
+
+  """All values that are contained in given list."""
+  startDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startDate_lte: DateTime
+
+  """All values greater than the given value."""
+  startDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startDate_gte: DateTime
+  endDate: DateTime
+
+  """All values that are not equal to given value."""
+  endDate_not: DateTime
+
+  """All values that are contained in given list."""
+  endDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endDate_lte: DateTime
+
+  """All values greater than the given value."""
+  endDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endDate_gte: DateTime
+  _room: RoomWhereInput
+  _info: BookingInfoWhereInput
+}
+
+input BookingWhereUniqueInput {
+  id: ID
 }
 
 type Church implements Node {
@@ -1267,6 +1717,8 @@ type Mutation {
   createRoom(data: RoomCreateInput!): Room!
   createDepartment(data: DepartmentCreateInput!): Department!
   createDisciple(data: DiscipleCreateInput!): Disciple!
+  createBooking(data: BookingCreateInput!): Booking!
+  createBookingInfo(data: BookingInfoCreateInput!): BookingInfo!
   createPost(data: PostCreateInput!): Post!
   createUser(data: UserCreateInput!): User!
   updateChurch(data: ChurchUpdateInput!, where: ChurchWhereUniqueInput!): Church
@@ -1274,6 +1726,8 @@ type Mutation {
   updateRoom(data: RoomUpdateInput!, where: RoomWhereUniqueInput!): Room
   updateDepartment(data: DepartmentUpdateInput!, where: DepartmentWhereUniqueInput!): Department
   updateDisciple(data: DiscipleUpdateInput!, where: DiscipleWhereUniqueInput!): Disciple
+  updateBooking(data: BookingUpdateInput!, where: BookingWhereUniqueInput!): Booking
+  updateBookingInfo(data: BookingInfoUpdateInput!, where: BookingInfoWhereUniqueInput!): BookingInfo
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteChurch(where: ChurchWhereUniqueInput!): Church
@@ -1281,6 +1735,8 @@ type Mutation {
   deleteRoom(where: RoomWhereUniqueInput!): Room
   deleteDepartment(where: DepartmentWhereUniqueInput!): Department
   deleteDisciple(where: DiscipleWhereUniqueInput!): Disciple
+  deleteBooking(where: BookingWhereUniqueInput!): Booking
+  deleteBookingInfo(where: BookingInfoWhereUniqueInput!): BookingInfo
   deletePost(where: PostWhereUniqueInput!): Post
   deleteUser(where: UserWhereUniqueInput!): User
   upsertChurch(where: ChurchWhereUniqueInput!, create: ChurchCreateInput!, update: ChurchUpdateInput!): Church!
@@ -1288,6 +1744,8 @@ type Mutation {
   upsertRoom(where: RoomWhereUniqueInput!, create: RoomCreateInput!, update: RoomUpdateInput!): Room!
   upsertDepartment(where: DepartmentWhereUniqueInput!, create: DepartmentCreateInput!, update: DepartmentUpdateInput!): Department!
   upsertDisciple(where: DiscipleWhereUniqueInput!, create: DiscipleCreateInput!, update: DiscipleUpdateInput!): Disciple!
+  upsertBooking(where: BookingWhereUniqueInput!, create: BookingCreateInput!, update: BookingUpdateInput!): Booking!
+  upsertBookingInfo(where: BookingInfoWhereUniqueInput!, create: BookingInfoCreateInput!, update: BookingInfoUpdateInput!): BookingInfo!
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyChurches(data: ChurchUpdateInput!, where: ChurchWhereInput): BatchPayload!
@@ -1295,6 +1753,8 @@ type Mutation {
   updateManyRooms(data: RoomUpdateInput!, where: RoomWhereInput): BatchPayload!
   updateManyDepartments(data: DepartmentUpdateInput!, where: DepartmentWhereInput): BatchPayload!
   updateManyDisciples(data: DiscipleUpdateInput!, where: DiscipleWhereInput): BatchPayload!
+  updateManyBookings(data: BookingUpdateInput!, where: BookingWhereInput): BatchPayload!
+  updateManyBookingInfoes(data: BookingInfoUpdateInput!, where: BookingInfoWhereInput): BatchPayload!
   updateManyPosts(data: PostUpdateInput!, where: PostWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   deleteManyChurches(where: ChurchWhereInput): BatchPayload!
@@ -1302,6 +1762,8 @@ type Mutation {
   deleteManyRooms(where: RoomWhereInput): BatchPayload!
   deleteManyDepartments(where: DepartmentWhereInput): BatchPayload!
   deleteManyDisciples(where: DiscipleWhereInput): BatchPayload!
+  deleteManyBookings(where: BookingWhereInput): BatchPayload!
+  deleteManyBookingInfoes(where: BookingInfoWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
@@ -1666,6 +2128,8 @@ type Query {
   rooms(where: RoomWhereInput, orderBy: RoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Room]!
   departments(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Department]!
   disciples(where: DiscipleWhereInput, orderBy: DiscipleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Disciple]!
+  bookings(where: BookingWhereInput, orderBy: BookingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Booking]!
+  bookingInfoes(where: BookingInfoWhereInput, orderBy: BookingInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BookingInfo]!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   church(where: ChurchWhereUniqueInput!): Church
@@ -1673,6 +2137,8 @@ type Query {
   room(where: RoomWhereUniqueInput!): Room
   department(where: DepartmentWhereUniqueInput!): Department
   disciple(where: DiscipleWhereUniqueInput!): Disciple
+  booking(where: BookingWhereUniqueInput!): Booking
+  bookingInfo(where: BookingInfoWhereUniqueInput!): BookingInfo
   post(where: PostWhereUniqueInput!): Post
   user(where: UserWhereUniqueInput!): User
   churchesConnection(where: ChurchWhereInput, orderBy: ChurchOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChurchConnection!
@@ -1680,6 +2146,8 @@ type Query {
   roomsConnection(where: RoomWhereInput, orderBy: RoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RoomConnection!
   departmentsConnection(where: DepartmentWhereInput, orderBy: DepartmentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DepartmentConnection!
   disciplesConnection(where: DiscipleWhereInput, orderBy: DiscipleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DiscipleConnection!
+  bookingsConnection(where: BookingWhereInput, orderBy: BookingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BookingConnection!
+  bookingInfoesConnection(where: BookingInfoWhereInput, orderBy: BookingInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BookingInfoConnection!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
@@ -1723,6 +2191,11 @@ input RoomCreateManyWithout_departmentsInput {
 input RoomCreateManyWithout_floorInput {
   create: [RoomCreateWithout_floorInput!]
   connect: [RoomWhereUniqueInput!]
+}
+
+input RoomCreateOneInput {
+  create: RoomCreateInput
+  connect: RoomWhereUniqueInput
 }
 
 input RoomCreateWithout_departmentsInput {
@@ -1804,6 +2277,13 @@ input RoomSubscriptionWhereInput {
   node: RoomWhereInput
 }
 
+input RoomUpdateDataInput {
+  domain: String
+  name: String
+  _floor: FloorUpdateOneWithout_roomsInput
+  _departments: DepartmentUpdateManyWithout_roomsInput
+}
+
 input RoomUpdateInput {
   domain: String
   name: String
@@ -1829,6 +2309,14 @@ input RoomUpdateManyWithout_floorInput {
   upsert: [RoomUpsertWithWhereUniqueWithout_floorInput!]
 }
 
+input RoomUpdateOneInput {
+  create: RoomCreateInput
+  connect: RoomWhereUniqueInput
+  delete: Boolean
+  update: RoomUpdateDataInput
+  upsert: RoomUpsertNestedInput
+}
+
 input RoomUpdateWithout_departmentsDataInput {
   domain: String
   name: String
@@ -1849,6 +2337,11 @@ input RoomUpdateWithWhereUniqueWithout_departmentsInput {
 input RoomUpdateWithWhereUniqueWithout_floorInput {
   where: RoomWhereUniqueInput!
   data: RoomUpdateWithout_floorDataInput!
+}
+
+input RoomUpsertNestedInput {
+  update: RoomUpdateDataInput!
+  create: RoomCreateInput!
 }
 
 input RoomUpsertWithWhereUniqueWithout_departmentsInput {
@@ -2009,6 +2502,8 @@ type Subscription {
   room(where: RoomSubscriptionWhereInput): RoomSubscriptionPayload
   department(where: DepartmentSubscriptionWhereInput): DepartmentSubscriptionPayload
   disciple(where: DiscipleSubscriptionWhereInput): DiscipleSubscriptionPayload
+  booking(where: BookingSubscriptionWhereInput): BookingSubscriptionPayload
+  bookingInfo(where: BookingInfoSubscriptionWhereInput): BookingInfoSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
