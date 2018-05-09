@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Mon May 07 2018 22:34:29 GMT+0700 (+07)
+# timestamp: Tue May 08 2018 04:49:49 GMT+0700 (+07)
 
 type AggregateBooking {
   count: Int!
@@ -47,6 +47,7 @@ type Booking implements Node {
   createdAt: DateTime!
   startDate: DateTime!
   endDate: DateTime!
+  _bookee(where: UserWhereInput): User!
   _room(where: RoomWhereInput): Room!
   _info(where: BookingInfoWhereInput): BookingInfo!
 }
@@ -64,8 +65,14 @@ type BookingConnection {
 input BookingCreateInput {
   startDate: DateTime!
   endDate: DateTime!
+  _bookee: UserCreateOneWithout_bookingsInput!
   _room: RoomCreateOneInput!
   _info: BookingInfoCreateOneWithout_bookingInput!
+}
+
+input BookingCreateManyWithout_bookeeInput {
+  create: [BookingCreateWithout_bookeeInput!]
+  connect: [BookingWhereUniqueInput!]
 }
 
 input BookingCreateOneWithout_infoInput {
@@ -73,9 +80,17 @@ input BookingCreateOneWithout_infoInput {
   connect: BookingWhereUniqueInput
 }
 
+input BookingCreateWithout_bookeeInput {
+  startDate: DateTime!
+  endDate: DateTime!
+  _room: RoomCreateOneInput!
+  _info: BookingInfoCreateOneWithout_bookingInput!
+}
+
 input BookingCreateWithout_infoInput {
   startDate: DateTime!
   endDate: DateTime!
+  _bookee: UserCreateOneWithout_bookingsInput!
   _room: RoomCreateOneInput!
 }
 
@@ -91,6 +106,7 @@ type BookingEdge {
 type BookingInfo implements Node {
   id: ID!
   status: BookingStatus!
+  _approver(where: UserWhereInput): User!
   _booking(where: BookingWhereInput): Booking!
 }
 
@@ -106,7 +122,13 @@ type BookingInfoConnection {
 
 input BookingInfoCreateInput {
   status: BookingStatus!
+  _approver: UserCreateOneWithout_approvedInput!
   _booking: BookingCreateOneWithout_infoInput!
+}
+
+input BookingInfoCreateManyWithout_approverInput {
+  create: [BookingInfoCreateWithout_approverInput!]
+  connect: [BookingInfoWhereUniqueInput!]
 }
 
 input BookingInfoCreateOneWithout_bookingInput {
@@ -114,8 +136,14 @@ input BookingInfoCreateOneWithout_bookingInput {
   connect: BookingInfoWhereUniqueInput
 }
 
+input BookingInfoCreateWithout_approverInput {
+  status: BookingStatus!
+  _booking: BookingCreateOneWithout_infoInput!
+}
+
 input BookingInfoCreateWithout_bookingInput {
   status: BookingStatus!
+  _approver: UserCreateOneWithout_approvedInput!
 }
 
 """An edge in a connection."""
@@ -184,7 +212,17 @@ input BookingInfoSubscriptionWhereInput {
 
 input BookingInfoUpdateInput {
   status: BookingStatus
+  _approver: UserUpdateOneWithout_approvedInput
   _booking: BookingUpdateOneWithout_infoInput
+}
+
+input BookingInfoUpdateManyWithout_approverInput {
+  create: [BookingInfoCreateWithout_approverInput!]
+  connect: [BookingInfoWhereUniqueInput!]
+  disconnect: [BookingInfoWhereUniqueInput!]
+  delete: [BookingInfoWhereUniqueInput!]
+  update: [BookingInfoUpdateWithWhereUniqueWithout_approverInput!]
+  upsert: [BookingInfoUpsertWithWhereUniqueWithout_approverInput!]
 }
 
 input BookingInfoUpdateOneWithout_bookingInput {
@@ -195,13 +233,30 @@ input BookingInfoUpdateOneWithout_bookingInput {
   upsert: BookingInfoUpsertWithout_bookingInput
 }
 
+input BookingInfoUpdateWithout_approverDataInput {
+  status: BookingStatus
+  _booking: BookingUpdateOneWithout_infoInput
+}
+
 input BookingInfoUpdateWithout_bookingDataInput {
   status: BookingStatus
+  _approver: UserUpdateOneWithout_approvedInput
+}
+
+input BookingInfoUpdateWithWhereUniqueWithout_approverInput {
+  where: BookingInfoWhereUniqueInput!
+  data: BookingInfoUpdateWithout_approverDataInput!
 }
 
 input BookingInfoUpsertWithout_bookingInput {
   update: BookingInfoUpdateWithout_bookingDataInput!
   create: BookingInfoCreateWithout_bookingInput!
+}
+
+input BookingInfoUpsertWithWhereUniqueWithout_approverInput {
+  where: BookingInfoWhereUniqueInput!
+  update: BookingInfoUpdateWithout_approverDataInput!
+  create: BookingInfoCreateWithout_approverInput!
 }
 
 input BookingInfoWhereInput {
@@ -263,6 +318,7 @@ input BookingInfoWhereInput {
 
   """All values that are not contained in given list."""
   status_not_in: [BookingStatus!]
+  _approver: UserWhereInput
   _booking: BookingWhereInput
 }
 
@@ -338,8 +394,18 @@ input BookingSubscriptionWhereInput {
 input BookingUpdateInput {
   startDate: DateTime
   endDate: DateTime
+  _bookee: UserUpdateOneWithout_bookingsInput
   _room: RoomUpdateOneInput
   _info: BookingInfoUpdateOneWithout_bookingInput
+}
+
+input BookingUpdateManyWithout_bookeeInput {
+  create: [BookingCreateWithout_bookeeInput!]
+  connect: [BookingWhereUniqueInput!]
+  disconnect: [BookingWhereUniqueInput!]
+  delete: [BookingWhereUniqueInput!]
+  update: [BookingUpdateWithWhereUniqueWithout_bookeeInput!]
+  upsert: [BookingUpsertWithWhereUniqueWithout_bookeeInput!]
 }
 
 input BookingUpdateOneWithout_infoInput {
@@ -350,15 +416,34 @@ input BookingUpdateOneWithout_infoInput {
   upsert: BookingUpsertWithout_infoInput
 }
 
-input BookingUpdateWithout_infoDataInput {
+input BookingUpdateWithout_bookeeDataInput {
   startDate: DateTime
   endDate: DateTime
   _room: RoomUpdateOneInput
+  _info: BookingInfoUpdateOneWithout_bookingInput
+}
+
+input BookingUpdateWithout_infoDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  _bookee: UserUpdateOneWithout_bookingsInput
+  _room: RoomUpdateOneInput
+}
+
+input BookingUpdateWithWhereUniqueWithout_bookeeInput {
+  where: BookingWhereUniqueInput!
+  data: BookingUpdateWithout_bookeeDataInput!
 }
 
 input BookingUpsertWithout_infoInput {
   update: BookingUpdateWithout_infoDataInput!
   create: BookingCreateWithout_infoInput!
+}
+
+input BookingUpsertWithWhereUniqueWithout_bookeeInput {
+  where: BookingWhereUniqueInput!
+  update: BookingUpdateWithout_bookeeDataInput!
+  create: BookingCreateWithout_bookeeInput!
 }
 
 input BookingWhereInput {
@@ -476,6 +561,7 @@ input BookingWhereInput {
 
   """All values greater than or equal the given value."""
   endDate_gte: DateTime
+  _bookee: UserWhereInput
   _room: RoomWhereInput
   _info: BookingInfoWhereInput
 }
@@ -2514,6 +2600,8 @@ type User implements Node {
   password: String!
   name: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  _bookings(where: BookingWhereInput, orderBy: BookingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Booking!]
+  _approved(where: BookingInfoWhereInput, orderBy: BookingInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BookingInfo!]
 }
 
 """A connection to a list of items."""
@@ -2531,6 +2619,18 @@ input UserCreateInput {
   password: String!
   name: String!
   posts: PostCreateManyWithoutAuthorInput
+  _bookings: BookingCreateManyWithout_bookeeInput
+  _approved: BookingInfoCreateManyWithout_approverInput
+}
+
+input UserCreateOneWithout_approvedInput {
+  create: UserCreateWithout_approvedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithout_bookingsInput {
+  create: UserCreateWithout_bookingsInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutPostsInput {
@@ -2538,10 +2638,28 @@ input UserCreateOneWithoutPostsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateWithout_approvedInput {
+  email: String!
+  password: String!
+  name: String!
+  posts: PostCreateManyWithoutAuthorInput
+  _bookings: BookingCreateManyWithout_bookeeInput
+}
+
+input UserCreateWithout_bookingsInput {
+  email: String!
+  password: String!
+  name: String!
+  posts: PostCreateManyWithoutAuthorInput
+  _approved: BookingInfoCreateManyWithout_approverInput
+}
+
 input UserCreateWithoutPostsInput {
   email: String!
   password: String!
   name: String!
+  _bookings: BookingCreateManyWithout_bookeeInput
+  _approved: BookingInfoCreateManyWithout_approverInput
 }
 
 """An edge in a connection."""
@@ -2619,6 +2737,24 @@ input UserUpdateInput {
   password: String
   name: String
   posts: PostUpdateManyWithoutAuthorInput
+  _bookings: BookingUpdateManyWithout_bookeeInput
+  _approved: BookingInfoUpdateManyWithout_approverInput
+}
+
+input UserUpdateOneWithout_approvedInput {
+  create: UserCreateWithout_approvedInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithout_approvedDataInput
+  upsert: UserUpsertWithout_approvedInput
+}
+
+input UserUpdateOneWithout_bookingsInput {
+  create: UserCreateWithout_bookingsInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithout_bookingsDataInput
+  upsert: UserUpsertWithout_bookingsInput
 }
 
 input UserUpdateOneWithoutPostsInput {
@@ -2629,10 +2765,38 @@ input UserUpdateOneWithoutPostsInput {
   upsert: UserUpsertWithoutPostsInput
 }
 
+input UserUpdateWithout_approvedDataInput {
+  email: String
+  password: String
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
+  _bookings: BookingUpdateManyWithout_bookeeInput
+}
+
+input UserUpdateWithout_bookingsDataInput {
+  email: String
+  password: String
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
+  _approved: BookingInfoUpdateManyWithout_approverInput
+}
+
 input UserUpdateWithoutPostsDataInput {
   email: String
   password: String
   name: String
+  _bookings: BookingUpdateManyWithout_bookeeInput
+  _approved: BookingInfoUpdateManyWithout_approverInput
+}
+
+input UserUpsertWithout_approvedInput {
+  update: UserUpdateWithout_approvedDataInput!
+  create: UserCreateWithout_approvedInput!
+}
+
+input UserUpsertWithout_bookingsInput {
+  update: UserUpdateWithout_bookingsDataInput!
+  create: UserCreateWithout_bookingsInput!
 }
 
 input UserUpsertWithoutPostsInput {
@@ -2812,6 +2976,12 @@ input UserWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
+  _bookings_every: BookingWhereInput
+  _bookings_some: BookingWhereInput
+  _bookings_none: BookingWhereInput
+  _approved_every: BookingInfoWhereInput
+  _approved_some: BookingInfoWhereInput
+  _approved_none: BookingInfoWhereInput
 }
 
 input UserWhereUniqueInput {

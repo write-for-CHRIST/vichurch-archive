@@ -50,6 +50,7 @@ type Booking implements Node {
   createdAt: DateTime!
   startDate: DateTime!
   endDate: DateTime!
+  _bookee(where: UserWhereInput): User!
   _room(where: RoomWhereInput): Room!
   _info(where: BookingInfoWhereInput): BookingInfo!
 }
@@ -72,8 +73,14 @@ type BookingConnection {
 input BookingCreateInput {
   startDate: DateTime!
   endDate: DateTime!
+  _bookee: UserCreateOneWithout_bookingsInput!
   _room: RoomCreateOneInput!
   _info: BookingInfoCreateOneWithout_bookingInput!
+}
+
+input BookingCreateManyWithout_bookeeInput {
+  create: [BookingCreateWithout_bookeeInput!]
+  connect: [BookingWhereUniqueInput!]
 }
 
 input BookingCreateOneWithout_infoInput {
@@ -81,9 +88,17 @@ input BookingCreateOneWithout_infoInput {
   connect: BookingWhereUniqueInput
 }
 
+input BookingCreateWithout_bookeeInput {
+  startDate: DateTime!
+  endDate: DateTime!
+  _room: RoomCreateOneInput!
+  _info: BookingInfoCreateOneWithout_bookingInput!
+}
+
 input BookingCreateWithout_infoInput {
   startDate: DateTime!
   endDate: DateTime!
+  _bookee: UserCreateOneWithout_bookingsInput!
   _room: RoomCreateOneInput!
 }
 
@@ -104,6 +119,7 @@ type BookingEdge {
 type BookingInfo implements Node {
   id: ID!
   status: BookingStatus!
+  _approver(where: UserWhereInput): User!
   _booking(where: BookingWhereInput): Booking!
 }
 
@@ -124,7 +140,13 @@ type BookingInfoConnection {
 
 input BookingInfoCreateInput {
   status: BookingStatus!
+  _approver: UserCreateOneWithout_approvedInput!
   _booking: BookingCreateOneWithout_infoInput!
+}
+
+input BookingInfoCreateManyWithout_approverInput {
+  create: [BookingInfoCreateWithout_approverInput!]
+  connect: [BookingInfoWhereUniqueInput!]
 }
 
 input BookingInfoCreateOneWithout_bookingInput {
@@ -132,8 +154,14 @@ input BookingInfoCreateOneWithout_bookingInput {
   connect: BookingInfoWhereUniqueInput
 }
 
+input BookingInfoCreateWithout_approverInput {
+  status: BookingStatus!
+  _booking: BookingCreateOneWithout_infoInput!
+}
+
 input BookingInfoCreateWithout_bookingInput {
   status: BookingStatus!
+  _approver: UserCreateOneWithout_approvedInput!
 }
 
 """
@@ -207,7 +235,17 @@ input BookingInfoSubscriptionWhereInput {
 
 input BookingInfoUpdateInput {
   status: BookingStatus
+  _approver: UserUpdateOneWithout_approvedInput
   _booking: BookingUpdateOneWithout_infoInput
+}
+
+input BookingInfoUpdateManyWithout_approverInput {
+  create: [BookingInfoCreateWithout_approverInput!]
+  connect: [BookingInfoWhereUniqueInput!]
+  disconnect: [BookingInfoWhereUniqueInput!]
+  delete: [BookingInfoWhereUniqueInput!]
+  update: [BookingInfoUpdateWithWhereUniqueWithout_approverInput!]
+  upsert: [BookingInfoUpsertWithWhereUniqueWithout_approverInput!]
 }
 
 input BookingInfoUpdateOneWithout_bookingInput {
@@ -218,13 +256,30 @@ input BookingInfoUpdateOneWithout_bookingInput {
   upsert: BookingInfoUpsertWithout_bookingInput
 }
 
+input BookingInfoUpdateWithout_approverDataInput {
+  status: BookingStatus
+  _booking: BookingUpdateOneWithout_infoInput
+}
+
 input BookingInfoUpdateWithout_bookingDataInput {
   status: BookingStatus
+  _approver: UserUpdateOneWithout_approvedInput
+}
+
+input BookingInfoUpdateWithWhereUniqueWithout_approverInput {
+  where: BookingInfoWhereUniqueInput!
+  data: BookingInfoUpdateWithout_approverDataInput!
 }
 
 input BookingInfoUpsertWithout_bookingInput {
   update: BookingInfoUpdateWithout_bookingDataInput!
   create: BookingInfoCreateWithout_bookingInput!
+}
+
+input BookingInfoUpsertWithWhereUniqueWithout_approverInput {
+  where: BookingInfoWhereUniqueInput!
+  update: BookingInfoUpdateWithout_approverDataInput!
+  create: BookingInfoCreateWithout_approverInput!
 }
 
 input BookingInfoWhereInput {
@@ -306,6 +361,7 @@ input BookingInfoWhereInput {
   All values that are not contained in given list.
   """
   status_not_in: [BookingStatus!]
+  _approver: UserWhereInput
   _booking: BookingWhereInput
 }
 
@@ -381,8 +437,18 @@ input BookingSubscriptionWhereInput {
 input BookingUpdateInput {
   startDate: DateTime
   endDate: DateTime
+  _bookee: UserUpdateOneWithout_bookingsInput
   _room: RoomUpdateOneInput
   _info: BookingInfoUpdateOneWithout_bookingInput
+}
+
+input BookingUpdateManyWithout_bookeeInput {
+  create: [BookingCreateWithout_bookeeInput!]
+  connect: [BookingWhereUniqueInput!]
+  disconnect: [BookingWhereUniqueInput!]
+  delete: [BookingWhereUniqueInput!]
+  update: [BookingUpdateWithWhereUniqueWithout_bookeeInput!]
+  upsert: [BookingUpsertWithWhereUniqueWithout_bookeeInput!]
 }
 
 input BookingUpdateOneWithout_infoInput {
@@ -393,15 +459,34 @@ input BookingUpdateOneWithout_infoInput {
   upsert: BookingUpsertWithout_infoInput
 }
 
-input BookingUpdateWithout_infoDataInput {
+input BookingUpdateWithout_bookeeDataInput {
   startDate: DateTime
   endDate: DateTime
   _room: RoomUpdateOneInput
+  _info: BookingInfoUpdateOneWithout_bookingInput
+}
+
+input BookingUpdateWithout_infoDataInput {
+  startDate: DateTime
+  endDate: DateTime
+  _bookee: UserUpdateOneWithout_bookingsInput
+  _room: RoomUpdateOneInput
+}
+
+input BookingUpdateWithWhereUniqueWithout_bookeeInput {
+  where: BookingWhereUniqueInput!
+  data: BookingUpdateWithout_bookeeDataInput!
 }
 
 input BookingUpsertWithout_infoInput {
   update: BookingUpdateWithout_infoDataInput!
   create: BookingCreateWithout_infoInput!
+}
+
+input BookingUpsertWithWhereUniqueWithout_bookeeInput {
+  where: BookingWhereUniqueInput!
+  update: BookingUpdateWithout_bookeeDataInput!
+  create: BookingCreateWithout_bookeeInput!
 }
 
 input BookingWhereInput {
@@ -557,6 +642,7 @@ input BookingWhereInput {
   All values greater than or equal the given value.
   """
   endDate_gte: DateTime
+  _bookee: UserWhereInput
   _room: RoomWhereInput
   _info: BookingInfoWhereInput
 }
@@ -2834,6 +2920,8 @@ type User implements Node {
   password: String!
   name: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  _bookings(where: BookingWhereInput, orderBy: BookingOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Booking!]
+  _approved(where: BookingInfoWhereInput, orderBy: BookingInfoOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BookingInfo!]
 }
 
 """
@@ -2856,6 +2944,18 @@ input UserCreateInput {
   password: String!
   name: String!
   posts: PostCreateManyWithoutAuthorInput
+  _bookings: BookingCreateManyWithout_bookeeInput
+  _approved: BookingInfoCreateManyWithout_approverInput
+}
+
+input UserCreateOneWithout_approvedInput {
+  create: UserCreateWithout_approvedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithout_bookingsInput {
+  create: UserCreateWithout_bookingsInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutPostsInput {
@@ -2863,10 +2963,28 @@ input UserCreateOneWithoutPostsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateWithout_approvedInput {
+  email: String!
+  password: String!
+  name: String!
+  posts: PostCreateManyWithoutAuthorInput
+  _bookings: BookingCreateManyWithout_bookeeInput
+}
+
+input UserCreateWithout_bookingsInput {
+  email: String!
+  password: String!
+  name: String!
+  posts: PostCreateManyWithoutAuthorInput
+  _approved: BookingInfoCreateManyWithout_approverInput
+}
+
 input UserCreateWithoutPostsInput {
   email: String!
   password: String!
   name: String!
+  _bookings: BookingCreateManyWithout_bookeeInput
+  _approved: BookingInfoCreateManyWithout_approverInput
 }
 
 """
@@ -2949,6 +3067,24 @@ input UserUpdateInput {
   password: String
   name: String
   posts: PostUpdateManyWithoutAuthorInput
+  _bookings: BookingUpdateManyWithout_bookeeInput
+  _approved: BookingInfoUpdateManyWithout_approverInput
+}
+
+input UserUpdateOneWithout_approvedInput {
+  create: UserCreateWithout_approvedInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithout_approvedDataInput
+  upsert: UserUpsertWithout_approvedInput
+}
+
+input UserUpdateOneWithout_bookingsInput {
+  create: UserCreateWithout_bookingsInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateWithout_bookingsDataInput
+  upsert: UserUpsertWithout_bookingsInput
 }
 
 input UserUpdateOneWithoutPostsInput {
@@ -2959,10 +3095,38 @@ input UserUpdateOneWithoutPostsInput {
   upsert: UserUpsertWithoutPostsInput
 }
 
+input UserUpdateWithout_approvedDataInput {
+  email: String
+  password: String
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
+  _bookings: BookingUpdateManyWithout_bookeeInput
+}
+
+input UserUpdateWithout_bookingsDataInput {
+  email: String
+  password: String
+  name: String
+  posts: PostUpdateManyWithoutAuthorInput
+  _approved: BookingInfoUpdateManyWithout_approverInput
+}
+
 input UserUpdateWithoutPostsDataInput {
   email: String
   password: String
   name: String
+  _bookings: BookingUpdateManyWithout_bookeeInput
+  _approved: BookingInfoUpdateManyWithout_approverInput
+}
+
+input UserUpsertWithout_approvedInput {
+  update: UserUpdateWithout_approvedDataInput!
+  create: UserCreateWithout_approvedInput!
+}
+
+input UserUpsertWithout_bookingsInput {
+  update: UserUpdateWithout_bookingsDataInput!
+  create: UserCreateWithout_bookingsInput!
 }
 
 input UserUpsertWithoutPostsInput {
@@ -3198,6 +3362,12 @@ input UserWhereInput {
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
+  _bookings_every: BookingWhereInput
+  _bookings_some: BookingWhereInput
+  _bookings_none: BookingWhereInput
+  _approved_every: BookingInfoWhereInput
+  _approved_some: BookingInfoWhereInput
+  _approved_none: BookingInfoWhereInput
 }
 
 input UserWhereUniqueInput {
@@ -3394,16 +3564,6 @@ export type BookingOrderByInput =
   'updatedAt_ASC' |
   'updatedAt_DESC'
 
-export type BookingInfoOrderByInput = 
-  'id_ASC' |
-  'id_DESC' |
-  'status_ASC' |
-  'status_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
-  'createdAt_ASC' |
-  'createdAt_DESC'
-
 export type PostOrderByInput = 
   'id_ASC' |
   'id_DESC' |
@@ -3417,6 +3577,16 @@ export type PostOrderByInput =
   'title_DESC' |
   'text_ASC' |
   'text_DESC'
+
+export type BookingInfoOrderByInput = 
+  'id_ASC' |
+  'id_DESC' |
+  'status_ASC' |
+  'status_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
 
 export type UserOrderByInput = 
   'id_ASC' |
@@ -3432,8 +3602,9 @@ export type UserOrderByInput =
   'createdAt_ASC' |
   'createdAt_DESC'
 
-export interface BookingInfoCreateWithout_bookingInput {
-  status: BookingStatus
+export interface BookingCreateManyWithout_bookeeInput {
+  create?: BookingCreateWithout_bookeeInput[] | BookingCreateWithout_bookeeInput
+  connect?: BookingWhereUniqueInput[] | BookingWhereUniqueInput
 }
 
 export interface ChurchWhereInput {
@@ -3487,34 +3658,35 @@ export interface ChurchWhereInput {
   _floors_none?: FloorWhereInput
 }
 
-export interface DepartmentCreateManyWithout_roomsInput {
-  create?: DepartmentCreateWithout_roomsInput[] | DepartmentCreateWithout_roomsInput
-  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-}
-
-export interface DiscipleUpdateWithout_memberOfDataInput {
-  fullname?: String
-  firstName?: String
-  lastName?: String
-  _departmentLeader?: DepartmentUpdateOneWithout_leaderInput
-}
-
-export interface DepartmentCreateWithout_roomsInput {
+export interface ChurchCreateWithout_floorsInput {
   domain: String
-  _leader: DiscipleCreateOneWithout_departmentLeaderInput
-  _disciples?: DiscipleCreateManyWithout_memberOfInput
-}
-
-export interface UserCreateInput {
-  email: String
-  password: String
   name: String
-  posts?: PostCreateManyWithoutAuthorInput
 }
 
-export interface DiscipleCreateOneWithout_departmentLeaderInput {
-  create?: DiscipleCreateWithout_departmentLeaderInput
-  connect?: DiscipleWhereUniqueInput
+export interface UserUpdateWithout_bookingsDataInput {
+  email?: String
+  password?: String
+  name?: String
+  posts?: PostUpdateManyWithoutAuthorInput
+  _approved?: BookingInfoUpdateManyWithout_approverInput
+}
+
+export interface DiscipleCreateManyWithout_memberOfInput {
+  create?: DiscipleCreateWithout_memberOfInput[] | DiscipleCreateWithout_memberOfInput
+  connect?: DiscipleWhereUniqueInput[] | DiscipleWhereUniqueInput
+}
+
+export interface ChurchUpdateInput {
+  domain?: String
+  name?: String
+  _floors?: FloorUpdateManyWithout_churchInput
+}
+
+export interface DiscipleCreateWithout_memberOfInput {
+  fullname: String
+  firstName: String
+  lastName: String
+  _departmentLeader: DepartmentCreateOneWithout_leaderInput
 }
 
 export interface UserSubscriptionWhereInput {
@@ -3528,11 +3700,9 @@ export interface UserSubscriptionWhereInput {
   node?: UserWhereInput
 }
 
-export interface DiscipleCreateWithout_departmentLeaderInput {
-  fullname: String
-  firstName: String
-  lastName: String
-  _memberOf: DepartmentCreateOneWithout_disciplesInput
+export interface DepartmentCreateOneWithout_leaderInput {
+  create?: DepartmentCreateWithout_leaderInput
+  connect?: DepartmentWhereUniqueInput
 }
 
 export interface BookingInfoSubscriptionWhereInput {
@@ -3546,9 +3716,10 @@ export interface BookingInfoSubscriptionWhereInput {
   node?: BookingInfoWhereInput
 }
 
-export interface DepartmentCreateOneWithout_disciplesInput {
-  create?: DepartmentCreateWithout_disciplesInput
-  connect?: DepartmentWhereUniqueInput
+export interface DepartmentCreateWithout_leaderInput {
+  domain: String
+  _rooms?: RoomCreateManyWithout_departmentsInput
+  _disciples?: DiscipleCreateManyWithout_memberOfInput
 }
 
 export interface BookingSubscriptionWhereInput {
@@ -3562,546 +3733,11 @@ export interface BookingSubscriptionWhereInput {
   node?: BookingWhereInput
 }
 
-export interface DepartmentCreateWithout_disciplesInput {
-  domain: String
-  _leader: DiscipleCreateOneWithout_departmentLeaderInput
-  _rooms?: RoomCreateManyWithout_departmentsInput
-}
-
-export interface DiscipleSubscriptionWhereInput {
-  AND?: DiscipleSubscriptionWhereInput[] | DiscipleSubscriptionWhereInput
-  OR?: DiscipleSubscriptionWhereInput[] | DiscipleSubscriptionWhereInput
-  NOT?: DiscipleSubscriptionWhereInput[] | DiscipleSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: DiscipleWhereInput
-}
-
-export interface RoomCreateManyWithout_departmentsInput {
-  create?: RoomCreateWithout_departmentsInput[] | RoomCreateWithout_departmentsInput
-  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-}
-
-export interface DepartmentSubscriptionWhereInput {
-  AND?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
-  OR?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
-  NOT?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: DepartmentWhereInput
-}
-
-export interface RoomCreateWithout_departmentsInput {
-  domain: String
-  name: String
-  _floor: FloorCreateOneWithout_roomsInput
-}
-
-export interface DepartmentWhereInput {
-  AND?: DepartmentWhereInput[] | DepartmentWhereInput
-  OR?: DepartmentWhereInput[] | DepartmentWhereInput
-  NOT?: DepartmentWhereInput[] | DepartmentWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  domain?: String
-  domain_not?: String
-  domain_in?: String[] | String
-  domain_not_in?: String[] | String
-  domain_lt?: String
-  domain_lte?: String
-  domain_gt?: String
-  domain_gte?: String
-  domain_contains?: String
-  domain_not_contains?: String
-  domain_starts_with?: String
-  domain_not_starts_with?: String
-  domain_ends_with?: String
-  domain_not_ends_with?: String
-  _leader?: DiscipleWhereInput
-  _rooms_every?: RoomWhereInput
-  _rooms_some?: RoomWhereInput
-  _rooms_none?: RoomWhereInput
-  _disciples_every?: DiscipleWhereInput
-  _disciples_some?: DiscipleWhereInput
-  _disciples_none?: DiscipleWhereInput
-}
-
-export interface FloorCreateOneWithout_roomsInput {
-  create?: FloorCreateWithout_roomsInput
-  connect?: FloorWhereUniqueInput
-}
-
-export interface FloorSubscriptionWhereInput {
-  AND?: FloorSubscriptionWhereInput[] | FloorSubscriptionWhereInput
-  OR?: FloorSubscriptionWhereInput[] | FloorSubscriptionWhereInput
-  NOT?: FloorSubscriptionWhereInput[] | FloorSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: FloorWhereInput
-}
-
-export interface FloorCreateWithout_roomsInput {
-  domain: String
-  name: String
-  _church: ChurchCreateOneWithout_floorsInput
-}
-
-export interface RoomWhereInput {
-  AND?: RoomWhereInput[] | RoomWhereInput
-  OR?: RoomWhereInput[] | RoomWhereInput
-  NOT?: RoomWhereInput[] | RoomWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  domain?: String
-  domain_not?: String
-  domain_in?: String[] | String
-  domain_not_in?: String[] | String
-  domain_lt?: String
-  domain_lte?: String
-  domain_gt?: String
-  domain_gte?: String
-  domain_contains?: String
-  domain_not_contains?: String
-  domain_starts_with?: String
-  domain_not_starts_with?: String
-  domain_ends_with?: String
-  domain_not_ends_with?: String
-  name?: String
-  name_not?: String
-  name_in?: String[] | String
-  name_not_in?: String[] | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  _floor?: FloorWhereInput
-  _departments_every?: DepartmentWhereInput
-  _departments_some?: DepartmentWhereInput
-  _departments_none?: DepartmentWhereInput
-}
-
-export interface ChurchCreateOneWithout_floorsInput {
-  create?: ChurchCreateWithout_floorsInput
-  connect?: ChurchWhereUniqueInput
-}
-
-export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput
-  update: PostUpdateWithoutAuthorDataInput
-  create: PostCreateWithoutAuthorInput
-}
-
-export interface ChurchCreateWithout_floorsInput {
-  domain: String
-  name: String
-}
-
-export interface ChurchWhereUniqueInput {
-  id?: ID_Input
-  domain?: String
-}
-
-export interface DiscipleCreateManyWithout_memberOfInput {
-  create?: DiscipleCreateWithout_memberOfInput[] | DiscipleCreateWithout_memberOfInput
-  connect?: DiscipleWhereUniqueInput[] | DiscipleWhereUniqueInput
-}
-
-export interface RoomWhereUniqueInput {
-  id?: ID_Input
-  domain?: String
-}
-
-export interface DiscipleCreateWithout_memberOfInput {
-  fullname: String
-  firstName: String
-  lastName: String
-  _departmentLeader: DepartmentCreateOneWithout_leaderInput
-}
-
-export interface DiscipleWhereUniqueInput {
-  id?: ID_Input
-  fullname?: String
-}
-
-export interface DepartmentCreateOneWithout_leaderInput {
-  create?: DepartmentCreateWithout_leaderInput
-  connect?: DepartmentWhereUniqueInput
-}
-
-export interface BookingInfoWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface DepartmentCreateWithout_leaderInput {
-  domain: String
-  _rooms?: RoomCreateManyWithout_departmentsInput
-  _disciples?: DiscipleCreateManyWithout_memberOfInput
-}
-
-export interface UserWhereUniqueInput {
-  id?: ID_Input
-  email?: String
-}
-
 export interface FloorCreateInput {
   domain: String
   name: String
   _church: ChurchCreateOneWithout_floorsInput
   _rooms?: RoomCreateManyWithout_floorInput
-}
-
-export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput
-  data: PostUpdateWithoutAuthorDataInput
-}
-
-export interface RoomCreateInput {
-  domain: String
-  name: String
-  _floor: FloorCreateOneWithout_roomsInput
-  _departments?: DepartmentCreateManyWithout_roomsInput
-}
-
-export interface UserUpdateInput {
-  email?: String
-  password?: String
-  name?: String
-  posts?: PostUpdateManyWithoutAuthorInput
-}
-
-export interface DepartmentCreateInput {
-  domain: String
-  _leader: DiscipleCreateOneWithout_departmentLeaderInput
-  _rooms?: RoomCreateManyWithout_departmentsInput
-  _disciples?: DiscipleCreateManyWithout_memberOfInput
-}
-
-export interface UserUpdateWithoutPostsDataInput {
-  email?: String
-  password?: String
-  name?: String
-}
-
-export interface DiscipleCreateInput {
-  fullname: String
-  firstName: String
-  lastName: String
-  _departmentLeader: DepartmentCreateOneWithout_leaderInput
-  _memberOf: DepartmentCreateOneWithout_disciplesInput
-}
-
-export interface PostUpdateInput {
-  isPublished?: Boolean
-  title?: String
-  text?: String
-  author?: UserUpdateOneWithoutPostsInput
-}
-
-export interface BookingCreateInput {
-  startDate: DateTime
-  endDate: DateTime
-  _room: RoomCreateOneInput
-  _info: BookingInfoCreateOneWithout_bookingInput
-}
-
-export interface BookingUpdateWithout_infoDataInput {
-  startDate?: DateTime
-  endDate?: DateTime
-  _room?: RoomUpdateOneInput
-}
-
-export interface RoomCreateOneInput {
-  create?: RoomCreateInput
-  connect?: RoomWhereUniqueInput
-}
-
-export interface BookingInfoUpdateInput {
-  status?: BookingStatus
-  _booking?: BookingUpdateOneWithout_infoInput
-}
-
-export interface BookingInfoCreateOneWithout_bookingInput {
-  create?: BookingInfoCreateWithout_bookingInput
-  connect?: BookingInfoWhereUniqueInput
-}
-
-export interface BookingInfoUpdateWithout_bookingDataInput {
-  status?: BookingStatus
-}
-
-export interface DepartmentUpdateWithout_leaderDataInput {
-  domain?: String
-  _rooms?: RoomUpdateManyWithout_departmentsInput
-  _disciples?: DiscipleUpdateManyWithout_memberOfInput
-}
-
-export interface RoomUpsertNestedInput {
-  update: RoomUpdateDataInput
-  create: RoomCreateInput
-}
-
-export interface BookingInfoCreateInput {
-  status: BookingStatus
-  _booking: BookingCreateOneWithout_infoInput
-}
-
-export interface RoomUpdateOneInput {
-  create?: RoomCreateInput
-  connect?: RoomWhereUniqueInput
-  delete?: Boolean
-  update?: RoomUpdateDataInput
-  upsert?: RoomUpsertNestedInput
-}
-
-export interface BookingCreateOneWithout_infoInput {
-  create?: BookingCreateWithout_infoInput
-  connect?: BookingWhereUniqueInput
-}
-
-export interface DiscipleUpdateInput {
-  fullname?: String
-  firstName?: String
-  lastName?: String
-  _departmentLeader?: DepartmentUpdateOneWithout_leaderInput
-  _memberOf?: DepartmentUpdateOneWithout_disciplesInput
-}
-
-export interface BookingCreateWithout_infoInput {
-  startDate: DateTime
-  endDate: DateTime
-  _room: RoomCreateOneInput
-}
-
-export interface RoomUpdateInput {
-  domain?: String
-  name?: String
-  _floor?: FloorUpdateOneWithout_roomsInput
-  _departments?: DepartmentUpdateManyWithout_roomsInput
-}
-
-export interface PostCreateInput {
-  isPublished?: Boolean
-  title: String
-  text: String
-  author: UserCreateOneWithoutPostsInput
-}
-
-export interface FloorUpsertWithWhereUniqueWithout_churchInput {
-  where: FloorWhereUniqueInput
-  update: FloorUpdateWithout_churchDataInput
-  create: FloorCreateWithout_churchInput
-}
-
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface DepartmentUpsertWithWhereUniqueWithout_roomsInput {
-  where: DepartmentWhereUniqueInput
-  update: DepartmentUpdateWithout_roomsDataInput
-  create: DepartmentCreateWithout_roomsInput
-}
-
-export interface UserCreateWithoutPostsInput {
-  email: String
-  password: String
-  name: String
-}
-
-export interface DepartmentUpsertWithout_leaderInput {
-  update: DepartmentUpdateWithout_leaderDataInput
-  create: DepartmentCreateWithout_leaderInput
-}
-
-export interface DepartmentUpdateOneWithout_leaderInput {
-  create?: DepartmentCreateWithout_leaderInput
-  connect?: DepartmentWhereUniqueInput
-  delete?: Boolean
-  update?: DepartmentUpdateWithout_leaderDataInput
-  upsert?: DepartmentUpsertWithout_leaderInput
-}
-
-export interface FloorCreateManyWithout_churchInput {
-  create?: FloorCreateWithout_churchInput[] | FloorCreateWithout_churchInput
-  connect?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
-}
-
-export interface PostCreateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
-}
-
-export interface RoomCreateManyWithout_floorInput {
-  create?: RoomCreateWithout_floorInput[] | RoomCreateWithout_floorInput
-  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-}
-
-export interface PostCreateWithoutAuthorInput {
-  isPublished?: Boolean
-  title: String
-  text: String
-}
-
-export interface BookingWhereInput {
-  AND?: BookingWhereInput[] | BookingWhereInput
-  OR?: BookingWhereInput[] | BookingWhereInput
-  NOT?: BookingWhereInput[] | BookingWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  startDate?: DateTime
-  startDate_not?: DateTime
-  startDate_in?: DateTime[] | DateTime
-  startDate_not_in?: DateTime[] | DateTime
-  startDate_lt?: DateTime
-  startDate_lte?: DateTime
-  startDate_gt?: DateTime
-  startDate_gte?: DateTime
-  endDate?: DateTime
-  endDate_not?: DateTime
-  endDate_in?: DateTime[] | DateTime
-  endDate_not_in?: DateTime[] | DateTime
-  endDate_lt?: DateTime
-  endDate_lte?: DateTime
-  endDate_gt?: DateTime
-  endDate_gte?: DateTime
-  _room?: RoomWhereInput
-  _info?: BookingInfoWhereInput
-}
-
-export interface ChurchUpdateInput {
-  domain?: String
-  name?: String
-  _floors?: FloorUpdateManyWithout_churchInput
-}
-
-export interface DiscipleWhereInput {
-  AND?: DiscipleWhereInput[] | DiscipleWhereInput
-  OR?: DiscipleWhereInput[] | DiscipleWhereInput
-  NOT?: DiscipleWhereInput[] | DiscipleWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  fullname?: String
-  fullname_not?: String
-  fullname_in?: String[] | String
-  fullname_not_in?: String[] | String
-  fullname_lt?: String
-  fullname_lte?: String
-  fullname_gt?: String
-  fullname_gte?: String
-  fullname_contains?: String
-  fullname_not_contains?: String
-  fullname_starts_with?: String
-  fullname_not_starts_with?: String
-  fullname_ends_with?: String
-  fullname_not_ends_with?: String
-  firstName?: String
-  firstName_not?: String
-  firstName_in?: String[] | String
-  firstName_not_in?: String[] | String
-  firstName_lt?: String
-  firstName_lte?: String
-  firstName_gt?: String
-  firstName_gte?: String
-  firstName_contains?: String
-  firstName_not_contains?: String
-  firstName_starts_with?: String
-  firstName_not_starts_with?: String
-  firstName_ends_with?: String
-  firstName_not_ends_with?: String
-  lastName?: String
-  lastName_not?: String
-  lastName_in?: String[] | String
-  lastName_not_in?: String[] | String
-  lastName_lt?: String
-  lastName_lte?: String
-  lastName_gt?: String
-  lastName_gte?: String
-  lastName_contains?: String
-  lastName_not_contains?: String
-  lastName_starts_with?: String
-  lastName_not_starts_with?: String
-  lastName_ends_with?: String
-  lastName_not_ends_with?: String
-  _departmentLeader?: DepartmentWhereInput
-  _memberOf?: DepartmentWhereInput
-}
-
-export interface FloorUpdateManyWithout_churchInput {
-  create?: FloorCreateWithout_churchInput[] | FloorCreateWithout_churchInput
-  connect?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
-  disconnect?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
-  delete?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
-  update?: FloorUpdateWithWhereUniqueWithout_churchInput[] | FloorUpdateWithWhereUniqueWithout_churchInput
-  upsert?: FloorUpsertWithWhereUniqueWithout_churchInput[] | FloorUpsertWithWhereUniqueWithout_churchInput
 }
 
 export interface PostWhereInput {
@@ -4171,166 +3807,11 @@ export interface PostWhereInput {
   author?: UserWhereInput
 }
 
-export interface FloorUpdateWithWhereUniqueWithout_churchInput {
-  where: FloorWhereUniqueInput
-  data: FloorUpdateWithout_churchDataInput
-}
-
-export interface ChurchSubscriptionWhereInput {
-  AND?: ChurchSubscriptionWhereInput[] | ChurchSubscriptionWhereInput
-  OR?: ChurchSubscriptionWhereInput[] | ChurchSubscriptionWhereInput
-  NOT?: ChurchSubscriptionWhereInput[] | ChurchSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: ChurchWhereInput
-}
-
-export interface FloorUpdateWithout_churchDataInput {
-  domain?: String
-  name?: String
-  _rooms?: RoomUpdateManyWithout_floorInput
-}
-
-export interface FloorWhereUniqueInput {
-  id?: ID_Input
-  domain?: String
-}
-
-export interface RoomUpdateManyWithout_floorInput {
-  create?: RoomCreateWithout_floorInput[] | RoomCreateWithout_floorInput
-  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-  disconnect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-  delete?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-  update?: RoomUpdateWithWhereUniqueWithout_floorInput[] | RoomUpdateWithWhereUniqueWithout_floorInput
-  upsert?: RoomUpsertWithWhereUniqueWithout_floorInput[] | RoomUpsertWithWhereUniqueWithout_floorInput
-}
-
-export interface BookingWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface RoomUpdateWithWhereUniqueWithout_floorInput {
-  where: RoomWhereUniqueInput
-  data: RoomUpdateWithout_floorDataInput
-}
-
-export interface PostUpdateWithoutAuthorDataInput {
-  isPublished?: Boolean
-  title?: String
-  text?: String
-}
-
-export interface RoomUpdateWithout_floorDataInput {
-  domain?: String
-  name?: String
-  _departments?: DepartmentUpdateManyWithout_roomsInput
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput
-  create: UserCreateWithoutPostsInput
-}
-
-export interface DepartmentUpdateManyWithout_roomsInput {
-  create?: DepartmentCreateWithout_roomsInput[] | DepartmentCreateWithout_roomsInput
-  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-  disconnect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-  delete?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
-  update?: DepartmentUpdateWithWhereUniqueWithout_roomsInput[] | DepartmentUpdateWithWhereUniqueWithout_roomsInput
-  upsert?: DepartmentUpsertWithWhereUniqueWithout_roomsInput[] | DepartmentUpsertWithWhereUniqueWithout_roomsInput
-}
-
-export interface BookingUpsertWithout_infoInput {
-  update: BookingUpdateWithout_infoDataInput
-  create: BookingCreateWithout_infoInput
-}
-
-export interface DepartmentUpdateWithWhereUniqueWithout_roomsInput {
-  where: DepartmentWhereUniqueInput
-  data: DepartmentUpdateWithout_roomsDataInput
-}
-
-export interface BookingInfoUpsertWithout_bookingInput {
-  update: BookingInfoUpdateWithout_bookingDataInput
-  create: BookingInfoCreateWithout_bookingInput
-}
-
-export interface DepartmentUpdateWithout_roomsDataInput {
-  domain?: String
-  _leader?: DiscipleUpdateOneWithout_departmentLeaderInput
-  _disciples?: DiscipleUpdateManyWithout_memberOfInput
-}
-
-export interface RoomUpdateDataInput {
-  domain?: String
-  name?: String
-  _floor?: FloorUpdateOneWithout_roomsInput
-  _departments?: DepartmentUpdateManyWithout_roomsInput
-}
-
-export interface DiscipleUpdateOneWithout_departmentLeaderInput {
-  create?: DiscipleCreateWithout_departmentLeaderInput
-  connect?: DiscipleWhereUniqueInput
-  delete?: Boolean
-  update?: DiscipleUpdateWithout_departmentLeaderDataInput
-  upsert?: DiscipleUpsertWithout_departmentLeaderInput
-}
-
-export interface DepartmentUpdateInput {
-  domain?: String
-  _leader?: DiscipleUpdateOneWithout_departmentLeaderInput
-  _rooms?: RoomUpdateManyWithout_departmentsInput
-  _disciples?: DiscipleUpdateManyWithout_memberOfInput
-}
-
-export interface DiscipleUpdateWithout_departmentLeaderDataInput {
-  fullname?: String
-  firstName?: String
-  lastName?: String
-  _memberOf?: DepartmentUpdateOneWithout_disciplesInput
-}
-
-export interface RoomUpsertWithWhereUniqueWithout_floorInput {
-  where: RoomWhereUniqueInput
-  update: RoomUpdateWithout_floorDataInput
-  create: RoomCreateWithout_floorInput
-}
-
-export interface DepartmentUpdateOneWithout_disciplesInput {
-  create?: DepartmentCreateWithout_disciplesInput
-  connect?: DepartmentWhereUniqueInput
-  delete?: Boolean
-  update?: DepartmentUpdateWithout_disciplesDataInput
-  upsert?: DepartmentUpsertWithout_disciplesInput
-}
-
-export interface ChurchCreateInput {
+export interface RoomCreateInput {
   domain: String
   name: String
-  _floors?: FloorCreateManyWithout_churchInput
-}
-
-export interface DepartmentUpdateWithout_disciplesDataInput {
-  domain?: String
-  _leader?: DiscipleUpdateOneWithout_departmentLeaderInput
-  _rooms?: RoomUpdateManyWithout_departmentsInput
-}
-
-export interface RoomCreateWithout_floorInput {
-  domain: String
-  name: String
+  _floor: FloorCreateOneWithout_roomsInput
   _departments?: DepartmentCreateManyWithout_roomsInput
-}
-
-export interface RoomUpdateManyWithout_departmentsInput {
-  create?: RoomCreateWithout_departmentsInput[] | RoomCreateWithout_departmentsInput
-  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-  disconnect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-  delete?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
-  update?: RoomUpdateWithWhereUniqueWithout_departmentsInput[] | RoomUpdateWithWhereUniqueWithout_departmentsInput
-  upsert?: RoomUpsertWithWhereUniqueWithout_departmentsInput[] | RoomUpsertWithWhereUniqueWithout_departmentsInput
 }
 
 export interface BookingInfoWhereInput {
@@ -4355,12 +3836,479 @@ export interface BookingInfoWhereInput {
   status_not?: BookingStatus
   status_in?: BookingStatus[] | BookingStatus
   status_not_in?: BookingStatus[] | BookingStatus
+  _approver?: UserWhereInput
   _booking?: BookingWhereInput
 }
 
-export interface RoomUpdateWithWhereUniqueWithout_departmentsInput {
+export interface DepartmentCreateInput {
+  domain: String
+  _leader: DiscipleCreateOneWithout_departmentLeaderInput
+  _rooms?: RoomCreateManyWithout_departmentsInput
+  _disciples?: DiscipleCreateManyWithout_memberOfInput
+}
+
+export interface DiscipleWhereInput {
+  AND?: DiscipleWhereInput[] | DiscipleWhereInput
+  OR?: DiscipleWhereInput[] | DiscipleWhereInput
+  NOT?: DiscipleWhereInput[] | DiscipleWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  fullname?: String
+  fullname_not?: String
+  fullname_in?: String[] | String
+  fullname_not_in?: String[] | String
+  fullname_lt?: String
+  fullname_lte?: String
+  fullname_gt?: String
+  fullname_gte?: String
+  fullname_contains?: String
+  fullname_not_contains?: String
+  fullname_starts_with?: String
+  fullname_not_starts_with?: String
+  fullname_ends_with?: String
+  fullname_not_ends_with?: String
+  firstName?: String
+  firstName_not?: String
+  firstName_in?: String[] | String
+  firstName_not_in?: String[] | String
+  firstName_lt?: String
+  firstName_lte?: String
+  firstName_gt?: String
+  firstName_gte?: String
+  firstName_contains?: String
+  firstName_not_contains?: String
+  firstName_starts_with?: String
+  firstName_not_starts_with?: String
+  firstName_ends_with?: String
+  firstName_not_ends_with?: String
+  lastName?: String
+  lastName_not?: String
+  lastName_in?: String[] | String
+  lastName_not_in?: String[] | String
+  lastName_lt?: String
+  lastName_lte?: String
+  lastName_gt?: String
+  lastName_gte?: String
+  lastName_contains?: String
+  lastName_not_contains?: String
+  lastName_starts_with?: String
+  lastName_not_starts_with?: String
+  lastName_ends_with?: String
+  lastName_not_ends_with?: String
+  _departmentLeader?: DepartmentWhereInput
+  _memberOf?: DepartmentWhereInput
+}
+
+export interface DiscipleCreateInput {
+  fullname: String
+  firstName: String
+  lastName: String
+  _departmentLeader: DepartmentCreateOneWithout_leaderInput
+  _memberOf: DepartmentCreateOneWithout_disciplesInput
+}
+
+export interface FloorSubscriptionWhereInput {
+  AND?: FloorSubscriptionWhereInput[] | FloorSubscriptionWhereInput
+  OR?: FloorSubscriptionWhereInput[] | FloorSubscriptionWhereInput
+  NOT?: FloorSubscriptionWhereInput[] | FloorSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FloorWhereInput
+}
+
+export interface BookingCreateInput {
+  startDate: DateTime
+  endDate: DateTime
+  _bookee: UserCreateOneWithout_bookingsInput
+  _room: RoomCreateOneInput
+  _info: BookingInfoCreateOneWithout_bookingInput
+}
+
+export interface ChurchSubscriptionWhereInput {
+  AND?: ChurchSubscriptionWhereInput[] | ChurchSubscriptionWhereInput
+  OR?: ChurchSubscriptionWhereInput[] | ChurchSubscriptionWhereInput
+  NOT?: ChurchSubscriptionWhereInput[] | ChurchSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: ChurchWhereInput
+}
+
+export interface UserCreateOneWithout_bookingsInput {
+  create?: UserCreateWithout_bookingsInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface UserUpdateInput {
+  email?: String
+  password?: String
+  name?: String
+  posts?: PostUpdateManyWithoutAuthorInput
+  _bookings?: BookingUpdateManyWithout_bookeeInput
+  _approved?: BookingInfoUpdateManyWithout_approverInput
+}
+
+export interface UserCreateWithout_bookingsInput {
+  email: String
+  password: String
+  name: String
+  posts?: PostCreateManyWithoutAuthorInput
+  _approved?: BookingInfoCreateManyWithout_approverInput
+}
+
+export interface ChurchWhereUniqueInput {
+  id?: ID_Input
+  domain?: String
+}
+
+export interface PostCreateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+}
+
+export interface RoomWhereUniqueInput {
+  id?: ID_Input
+  domain?: String
+}
+
+export interface PostCreateWithoutAuthorInput {
+  isPublished?: Boolean
+  title: String
+  text: String
+}
+
+export interface DiscipleWhereUniqueInput {
+  id?: ID_Input
+  fullname?: String
+}
+
+export interface BookingInfoCreateManyWithout_approverInput {
+  create?: BookingInfoCreateWithout_approverInput[] | BookingInfoCreateWithout_approverInput
+  connect?: BookingInfoWhereUniqueInput[] | BookingInfoWhereUniqueInput
+}
+
+export interface BookingInfoWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface BookingInfoCreateWithout_approverInput {
+  status: BookingStatus
+  _booking: BookingCreateOneWithout_infoInput
+}
+
+export interface UserWhereUniqueInput {
+  id?: ID_Input
+  email?: String
+}
+
+export interface BookingCreateOneWithout_infoInput {
+  create?: BookingCreateWithout_infoInput
+  connect?: BookingWhereUniqueInput
+}
+
+export interface UserUpdateWithoutPostsDataInput {
+  email?: String
+  password?: String
+  name?: String
+  _bookings?: BookingUpdateManyWithout_bookeeInput
+  _approved?: BookingInfoUpdateManyWithout_approverInput
+}
+
+export interface BookingCreateWithout_infoInput {
+  startDate: DateTime
+  endDate: DateTime
+  _bookee: UserCreateOneWithout_bookingsInput
+  _room: RoomCreateOneInput
+}
+
+export interface PostUpdateInput {
+  isPublished?: Boolean
+  title?: String
+  text?: String
+  author?: UserUpdateOneWithoutPostsInput
+}
+
+export interface RoomCreateOneInput {
+  create?: RoomCreateInput
+  connect?: RoomWhereUniqueInput
+}
+
+export interface BookingInfoUpsertWithout_bookingInput {
+  update: BookingInfoUpdateWithout_bookingDataInput
+  create: BookingInfoCreateWithout_bookingInput
+}
+
+export interface BookingInfoCreateOneWithout_bookingInput {
+  create?: BookingInfoCreateWithout_bookingInput
+  connect?: BookingInfoWhereUniqueInput
+}
+
+export interface BookingUpsertWithWhereUniqueWithout_bookeeInput {
+  where: BookingWhereUniqueInput
+  update: BookingUpdateWithout_bookeeDataInput
+  create: BookingCreateWithout_bookeeInput
+}
+
+export interface BookingInfoCreateWithout_bookingInput {
+  status: BookingStatus
+  _approver: UserCreateOneWithout_approvedInput
+}
+
+export interface BookingUpdateWithWhereUniqueWithout_bookeeInput {
+  where: BookingWhereUniqueInput
+  data: BookingUpdateWithout_bookeeDataInput
+}
+
+export interface UserCreateOneWithout_approvedInput {
+  create?: UserCreateWithout_approvedInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface UserUpdateWithout_approvedDataInput {
+  email?: String
+  password?: String
+  name?: String
+  posts?: PostUpdateManyWithoutAuthorInput
+  _bookings?: BookingUpdateManyWithout_bookeeInput
+}
+
+export interface UserCreateWithout_approvedInput {
+  email: String
+  password: String
+  name: String
+  posts?: PostCreateManyWithoutAuthorInput
+  _bookings?: BookingCreateManyWithout_bookeeInput
+}
+
+export interface BookingInfoUpdateWithout_bookingDataInput {
+  status?: BookingStatus
+  _approver?: UserUpdateOneWithout_approvedInput
+}
+
+export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  data: PostUpdateWithoutAuthorDataInput
+}
+
+export interface UserUpsertWithout_bookingsInput {
+  update: UserUpdateWithout_bookingsDataInput
+  create: UserCreateWithout_bookingsInput
+}
+
+export interface BookingCreateWithout_bookeeInput {
+  startDate: DateTime
+  endDate: DateTime
+  _room: RoomCreateOneInput
+  _info: BookingInfoCreateOneWithout_bookingInput
+}
+
+export interface BookingUpsertWithout_infoInput {
+  update: BookingUpdateWithout_infoDataInput
+  create: BookingCreateWithout_infoInput
+}
+
+export interface BookingInfoCreateInput {
+  status: BookingStatus
+  _approver: UserCreateOneWithout_approvedInput
+  _booking: BookingCreateOneWithout_infoInput
+}
+
+export interface RoomUpdateDataInput {
+  domain?: String
+  name?: String
+  _floor?: FloorUpdateOneWithout_roomsInput
+  _departments?: DepartmentUpdateManyWithout_roomsInput
+}
+
+export interface PostCreateInput {
+  isPublished?: Boolean
+  title: String
+  text: String
+  author: UserCreateOneWithoutPostsInput
+}
+
+export interface BookingUpdateWithout_infoDataInput {
+  startDate?: DateTime
+  endDate?: DateTime
+  _bookee?: UserUpdateOneWithout_bookingsInput
+  _room?: RoomUpdateOneInput
+}
+
+export interface UserCreateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput
+  connect?: UserWhereUniqueInput
+}
+
+export interface BookingInfoUpdateWithout_approverDataInput {
+  status?: BookingStatus
+  _booking?: BookingUpdateOneWithout_infoInput
+}
+
+export interface UserCreateWithoutPostsInput {
+  email: String
+  password: String
+  name: String
+  _bookings?: BookingCreateManyWithout_bookeeInput
+  _approved?: BookingInfoCreateManyWithout_approverInput
+}
+
+export interface BookingInfoUpdateManyWithout_approverInput {
+  create?: BookingInfoCreateWithout_approverInput[] | BookingInfoCreateWithout_approverInput
+  connect?: BookingInfoWhereUniqueInput[] | BookingInfoWhereUniqueInput
+  disconnect?: BookingInfoWhereUniqueInput[] | BookingInfoWhereUniqueInput
+  delete?: BookingInfoWhereUniqueInput[] | BookingInfoWhereUniqueInput
+  update?: BookingInfoUpdateWithWhereUniqueWithout_approverInput[] | BookingInfoUpdateWithWhereUniqueWithout_approverInput
+  upsert?: BookingInfoUpsertWithWhereUniqueWithout_approverInput[] | BookingInfoUpsertWithWhereUniqueWithout_approverInput
+}
+
+export interface UserCreateInput {
+  email: String
+  password: String
+  name: String
+  posts?: PostCreateManyWithoutAuthorInput
+  _bookings?: BookingCreateManyWithout_bookeeInput
+  _approved?: BookingInfoCreateManyWithout_approverInput
+}
+
+export interface PostUpdateWithoutAuthorDataInput {
+  isPublished?: Boolean
+  title?: String
+  text?: String
+}
+
+export interface PostUpdateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  update?: PostUpdateWithWhereUniqueWithoutAuthorInput[] | PostUpdateWithWhereUniqueWithoutAuthorInput
+  upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput[] | PostUpsertWithWhereUniqueWithoutAuthorInput
+}
+
+export interface FloorCreateManyWithout_churchInput {
+  create?: FloorCreateWithout_churchInput[] | FloorCreateWithout_churchInput
+  connect?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
+}
+
+export interface FloorUpdateManyWithout_churchInput {
+  create?: FloorCreateWithout_churchInput[] | FloorCreateWithout_churchInput
+  connect?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
+  disconnect?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
+  delete?: FloorWhereUniqueInput[] | FloorWhereUniqueInput
+  update?: FloorUpdateWithWhereUniqueWithout_churchInput[] | FloorUpdateWithWhereUniqueWithout_churchInput
+  upsert?: FloorUpsertWithWhereUniqueWithout_churchInput[] | FloorUpsertWithWhereUniqueWithout_churchInput
+}
+
+export interface RoomCreateManyWithout_floorInput {
+  create?: RoomCreateWithout_floorInput[] | RoomCreateWithout_floorInput
+  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+}
+
+export interface FloorUpdateWithWhereUniqueWithout_churchInput {
+  where: FloorWhereUniqueInput
+  data: FloorUpdateWithout_churchDataInput
+}
+
+export interface DepartmentCreateManyWithout_roomsInput {
+  create?: DepartmentCreateWithout_roomsInput[] | DepartmentCreateWithout_roomsInput
+  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+}
+
+export interface FloorUpdateWithout_churchDataInput {
+  domain?: String
+  name?: String
+  _rooms?: RoomUpdateManyWithout_floorInput
+}
+
+export interface DiscipleCreateOneWithout_departmentLeaderInput {
+  create?: DiscipleCreateWithout_departmentLeaderInput
+  connect?: DiscipleWhereUniqueInput
+}
+
+export interface RoomUpdateManyWithout_floorInput {
+  create?: RoomCreateWithout_floorInput[] | RoomCreateWithout_floorInput
+  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+  disconnect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+  delete?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+  update?: RoomUpdateWithWhereUniqueWithout_floorInput[] | RoomUpdateWithWhereUniqueWithout_floorInput
+  upsert?: RoomUpsertWithWhereUniqueWithout_floorInput[] | RoomUpsertWithWhereUniqueWithout_floorInput
+}
+
+export interface DepartmentCreateOneWithout_disciplesInput {
+  create?: DepartmentCreateWithout_disciplesInput
+  connect?: DepartmentWhereUniqueInput
+}
+
+export interface RoomUpdateWithWhereUniqueWithout_floorInput {
   where: RoomWhereUniqueInput
-  data: RoomUpdateWithout_departmentsDataInput
+  data: RoomUpdateWithout_floorDataInput
+}
+
+export interface RoomCreateManyWithout_departmentsInput {
+  create?: RoomCreateWithout_departmentsInput[] | RoomCreateWithout_departmentsInput
+  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+}
+
+export interface RoomUpdateWithout_floorDataInput {
+  domain?: String
+  name?: String
+  _departments?: DepartmentUpdateManyWithout_roomsInput
+}
+
+export interface FloorCreateOneWithout_roomsInput {
+  create?: FloorCreateWithout_roomsInput
+  connect?: FloorWhereUniqueInput
+}
+
+export interface DepartmentUpdateManyWithout_roomsInput {
+  create?: DepartmentCreateWithout_roomsInput[] | DepartmentCreateWithout_roomsInput
+  connect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+  disconnect?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+  delete?: DepartmentWhereUniqueInput[] | DepartmentWhereUniqueInput
+  update?: DepartmentUpdateWithWhereUniqueWithout_roomsInput[] | DepartmentUpdateWithWhereUniqueWithout_roomsInput
+  upsert?: DepartmentUpsertWithWhereUniqueWithout_roomsInput[] | DepartmentUpsertWithWhereUniqueWithout_roomsInput
+}
+
+export interface ChurchCreateOneWithout_floorsInput {
+  create?: ChurchCreateWithout_floorsInput
+  connect?: ChurchWhereUniqueInput
+}
+
+export interface DepartmentUpdateWithWhereUniqueWithout_roomsInput {
+  where: DepartmentWhereUniqueInput
+  data: DepartmentUpdateWithout_roomsDataInput
+}
+
+export interface PostSubscriptionWhereInput {
+  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PostWhereInput
+}
+
+export interface DepartmentUpdateWithout_roomsDataInput {
+  domain?: String
+  _leader?: DiscipleUpdateOneWithout_departmentLeaderInput
+  _disciples?: DiscipleUpdateManyWithout_memberOfInput
 }
 
 export interface UserWhereInput {
@@ -4426,95 +4374,87 @@ export interface UserWhereInput {
   posts_every?: PostWhereInput
   posts_some?: PostWhereInput
   posts_none?: PostWhereInput
+  _bookings_every?: BookingWhereInput
+  _bookings_some?: BookingWhereInput
+  _bookings_none?: BookingWhereInput
+  _approved_every?: BookingInfoWhereInput
+  _approved_some?: BookingInfoWhereInput
+  _approved_none?: BookingInfoWhereInput
 }
 
-export interface RoomUpdateWithout_departmentsDataInput {
-  domain?: String
-  name?: String
-  _floor?: FloorUpdateOneWithout_roomsInput
-}
-
-export interface DepartmentWhereUniqueInput {
-  id?: ID_Input
-  domain?: String
-}
-
-export interface FloorUpdateOneWithout_roomsInput {
-  create?: FloorCreateWithout_roomsInput
-  connect?: FloorWhereUniqueInput
+export interface DiscipleUpdateOneWithout_departmentLeaderInput {
+  create?: DiscipleCreateWithout_departmentLeaderInput
+  connect?: DiscipleWhereUniqueInput
   delete?: Boolean
-  update?: FloorUpdateWithout_roomsDataInput
-  upsert?: FloorUpsertWithout_roomsInput
+  update?: DiscipleUpdateWithout_departmentLeaderDataInput
+  upsert?: DiscipleUpsertWithout_departmentLeaderInput
 }
 
-export interface PostUpdateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
-  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput
-  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput
-  update?: PostUpdateWithWhereUniqueWithoutAuthorInput[] | PostUpdateWithWhereUniqueWithoutAuthorInput
-  upsert?: PostUpsertWithWhereUniqueWithoutAuthorInput[] | PostUpsertWithWhereUniqueWithoutAuthorInput
-}
-
-export interface FloorUpdateWithout_roomsDataInput {
-  domain?: String
-  name?: String
-  _church?: ChurchUpdateOneWithout_floorsInput
-}
-
-export interface BookingUpdateOneWithout_infoInput {
-  create?: BookingCreateWithout_infoInput
-  connect?: BookingWhereUniqueInput
-  delete?: Boolean
-  update?: BookingUpdateWithout_infoDataInput
-  upsert?: BookingUpsertWithout_infoInput
-}
-
-export interface ChurchUpdateOneWithout_floorsInput {
-  create?: ChurchCreateWithout_floorsInput
-  connect?: ChurchWhereUniqueInput
-  delete?: Boolean
-  update?: ChurchUpdateWithout_floorsDataInput
-  upsert?: ChurchUpsertWithout_floorsInput
-}
-
-export interface BookingUpdateInput {
-  startDate?: DateTime
-  endDate?: DateTime
-  _room?: RoomUpdateOneInput
-  _info?: BookingInfoUpdateOneWithout_bookingInput
-}
-
-export interface ChurchUpdateWithout_floorsDataInput {
-  domain?: String
-  name?: String
-}
-
-export interface DiscipleUpsertWithWhereUniqueWithout_memberOfInput {
-  where: DiscipleWhereUniqueInput
-  update: DiscipleUpdateWithout_memberOfDataInput
-  create: DiscipleCreateWithout_memberOfInput
-}
-
-export interface ChurchUpsertWithout_floorsInput {
-  update: ChurchUpdateWithout_floorsDataInput
-  create: ChurchCreateWithout_floorsInput
-}
-
-export interface PostSubscriptionWhereInput {
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
-  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+export interface DepartmentSubscriptionWhereInput {
+  AND?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+  OR?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
+  NOT?: DepartmentSubscriptionWhereInput[] | DepartmentSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: PostWhereInput
+  node?: DepartmentWhereInput
 }
 
-export interface FloorUpsertWithout_roomsInput {
-  update: FloorUpdateWithout_roomsDataInput
-  create: FloorCreateWithout_roomsInput
+export interface DiscipleUpdateWithout_departmentLeaderDataInput {
+  fullname?: String
+  firstName?: String
+  lastName?: String
+  _memberOf?: DepartmentUpdateOneWithout_disciplesInput
+}
+
+export interface DepartmentWhereInput {
+  AND?: DepartmentWhereInput[] | DepartmentWhereInput
+  OR?: DepartmentWhereInput[] | DepartmentWhereInput
+  NOT?: DepartmentWhereInput[] | DepartmentWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  domain?: String
+  domain_not?: String
+  domain_in?: String[] | String
+  domain_not_in?: String[] | String
+  domain_lt?: String
+  domain_lte?: String
+  domain_gt?: String
+  domain_gte?: String
+  domain_contains?: String
+  domain_not_contains?: String
+  domain_starts_with?: String
+  domain_not_starts_with?: String
+  domain_ends_with?: String
+  domain_not_ends_with?: String
+  _leader?: DiscipleWhereInput
+  _rooms_every?: RoomWhereInput
+  _rooms_some?: RoomWhereInput
+  _rooms_none?: RoomWhereInput
+  _disciples_every?: DiscipleWhereInput
+  _disciples_some?: DiscipleWhereInput
+  _disciples_none?: DiscipleWhereInput
+}
+
+export interface DepartmentUpdateOneWithout_disciplesInput {
+  create?: DepartmentCreateWithout_disciplesInput
+  connect?: DepartmentWhereUniqueInput
+  delete?: Boolean
+  update?: DepartmentUpdateWithout_disciplesDataInput
+  upsert?: DepartmentUpsertWithout_disciplesInput
 }
 
 export interface FloorWhereInput {
@@ -4569,10 +4509,33 @@ export interface FloorWhereInput {
   _rooms_none?: RoomWhereInput
 }
 
-export interface RoomUpsertWithWhereUniqueWithout_departmentsInput {
+export interface DepartmentUpdateWithout_disciplesDataInput {
+  domain?: String
+  _leader?: DiscipleUpdateOneWithout_departmentLeaderInput
+  _rooms?: RoomUpdateManyWithout_departmentsInput
+}
+
+export interface DepartmentWhereUniqueInput {
+  id?: ID_Input
+  domain?: String
+}
+
+export interface RoomUpdateManyWithout_departmentsInput {
+  create?: RoomCreateWithout_departmentsInput[] | RoomCreateWithout_departmentsInput
+  connect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+  disconnect?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+  delete?: RoomWhereUniqueInput[] | RoomWhereUniqueInput
+  update?: RoomUpdateWithWhereUniqueWithout_departmentsInput[] | RoomUpdateWithWhereUniqueWithout_departmentsInput
+  upsert?: RoomUpsertWithWhereUniqueWithout_departmentsInput[] | RoomUpsertWithWhereUniqueWithout_departmentsInput
+}
+
+export interface PostWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface RoomUpdateWithWhereUniqueWithout_departmentsInput {
   where: RoomWhereUniqueInput
-  update: RoomUpdateWithout_departmentsDataInput
-  create: RoomCreateWithout_departmentsInput
+  data: RoomUpdateWithout_departmentsDataInput
 }
 
 export interface UserUpdateOneWithoutPostsInput {
@@ -4583,9 +4546,128 @@ export interface UserUpdateOneWithoutPostsInput {
   upsert?: UserUpsertWithoutPostsInput
 }
 
-export interface DiscipleUpdateWithWhereUniqueWithout_memberOfInput {
-  where: DiscipleWhereUniqueInput
-  data: DiscipleUpdateWithout_memberOfDataInput
+export interface RoomUpdateWithout_departmentsDataInput {
+  domain?: String
+  name?: String
+  _floor?: FloorUpdateOneWithout_roomsInput
+}
+
+export interface UserUpsertWithout_approvedInput {
+  update: UserUpdateWithout_approvedDataInput
+  create: UserCreateWithout_approvedInput
+}
+
+export interface FloorUpdateOneWithout_roomsInput {
+  create?: FloorCreateWithout_roomsInput
+  connect?: FloorWhereUniqueInput
+  delete?: Boolean
+  update?: FloorUpdateWithout_roomsDataInput
+  upsert?: FloorUpsertWithout_roomsInput
+}
+
+export interface BookingUpdateManyWithout_bookeeInput {
+  create?: BookingCreateWithout_bookeeInput[] | BookingCreateWithout_bookeeInput
+  connect?: BookingWhereUniqueInput[] | BookingWhereUniqueInput
+  disconnect?: BookingWhereUniqueInput[] | BookingWhereUniqueInput
+  delete?: BookingWhereUniqueInput[] | BookingWhereUniqueInput
+  update?: BookingUpdateWithWhereUniqueWithout_bookeeInput[] | BookingUpdateWithWhereUniqueWithout_bookeeInput
+  upsert?: BookingUpsertWithWhereUniqueWithout_bookeeInput[] | BookingUpsertWithWhereUniqueWithout_bookeeInput
+}
+
+export interface FloorUpdateWithout_roomsDataInput {
+  domain?: String
+  name?: String
+  _church?: ChurchUpdateOneWithout_floorsInput
+}
+
+export interface BookingInfoUpdateOneWithout_bookingInput {
+  create?: BookingInfoCreateWithout_bookingInput
+  connect?: BookingInfoWhereUniqueInput
+  delete?: Boolean
+  update?: BookingInfoUpdateWithout_bookingDataInput
+  upsert?: BookingInfoUpsertWithout_bookingInput
+}
+
+export interface ChurchUpdateOneWithout_floorsInput {
+  create?: ChurchCreateWithout_floorsInput
+  connect?: ChurchWhereUniqueInput
+  delete?: Boolean
+  update?: ChurchUpdateWithout_floorsDataInput
+  upsert?: ChurchUpsertWithout_floorsInput
+}
+
+export interface RoomUpsertNestedInput {
+  update: RoomUpdateDataInput
+  create: RoomCreateInput
+}
+
+export interface ChurchUpdateWithout_floorsDataInput {
+  domain?: String
+  name?: String
+}
+
+export interface BookingUpdateOneWithout_infoInput {
+  create?: BookingCreateWithout_infoInput
+  connect?: BookingWhereUniqueInput
+  delete?: Boolean
+  update?: BookingUpdateWithout_infoDataInput
+  upsert?: BookingUpsertWithout_infoInput
+}
+
+export interface ChurchUpsertWithout_floorsInput {
+  update: ChurchUpdateWithout_floorsDataInput
+  create: ChurchCreateWithout_floorsInput
+}
+
+export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutAuthorDataInput
+  create: PostCreateWithoutAuthorInput
+}
+
+export interface FloorUpsertWithout_roomsInput {
+  update: FloorUpdateWithout_roomsDataInput
+  create: FloorCreateWithout_roomsInput
+}
+
+export interface FloorCreateWithout_churchInput {
+  domain: String
+  name: String
+  _rooms?: RoomCreateManyWithout_floorInput
+}
+
+export interface RoomUpsertWithWhereUniqueWithout_departmentsInput {
+  where: RoomWhereUniqueInput
+  update: RoomUpdateWithout_departmentsDataInput
+  create: RoomCreateWithout_departmentsInput
+}
+
+export interface DepartmentCreateWithout_roomsInput {
+  domain: String
+  _leader: DiscipleCreateOneWithout_departmentLeaderInput
+  _disciples?: DiscipleCreateManyWithout_memberOfInput
+}
+
+export interface DepartmentUpsertWithout_disciplesInput {
+  update: DepartmentUpdateWithout_disciplesDataInput
+  create: DepartmentCreateWithout_disciplesInput
+}
+
+export interface DepartmentCreateWithout_disciplesInput {
+  domain: String
+  _leader: DiscipleCreateOneWithout_departmentLeaderInput
+  _rooms?: RoomCreateManyWithout_departmentsInput
+}
+
+export interface DiscipleUpsertWithout_departmentLeaderInput {
+  update: DiscipleUpdateWithout_departmentLeaderDataInput
+  create: DiscipleCreateWithout_departmentLeaderInput
+}
+
+export interface FloorCreateWithout_roomsInput {
+  domain: String
+  name: String
+  _church: ChurchCreateOneWithout_floorsInput
 }
 
 export interface DiscipleUpdateManyWithout_memberOfInput {
@@ -4597,26 +4679,56 @@ export interface DiscipleUpdateManyWithout_memberOfInput {
   upsert?: DiscipleUpsertWithWhereUniqueWithout_memberOfInput[] | DiscipleUpsertWithWhereUniqueWithout_memberOfInput
 }
 
-export interface DiscipleUpsertWithout_departmentLeaderInput {
-  update: DiscipleUpdateWithout_departmentLeaderDataInput
-  create: DiscipleCreateWithout_departmentLeaderInput
-}
-
-export interface DepartmentUpsertWithout_disciplesInput {
-  update: DepartmentUpdateWithout_disciplesDataInput
-  create: DepartmentCreateWithout_disciplesInput
-}
-
-export interface BookingInfoUpdateOneWithout_bookingInput {
-  create?: BookingInfoCreateWithout_bookingInput
-  connect?: BookingInfoWhereUniqueInput
-  delete?: Boolean
-  update?: BookingInfoUpdateWithout_bookingDataInput
-  upsert?: BookingInfoUpsertWithout_bookingInput
-}
-
-export interface PostWhereUniqueInput {
+export interface BookingWhereInput {
+  AND?: BookingWhereInput[] | BookingWhereInput
+  OR?: BookingWhereInput[] | BookingWhereInput
+  NOT?: BookingWhereInput[] | BookingWhereInput
   id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  startDate?: DateTime
+  startDate_not?: DateTime
+  startDate_in?: DateTime[] | DateTime
+  startDate_not_in?: DateTime[] | DateTime
+  startDate_lt?: DateTime
+  startDate_lte?: DateTime
+  startDate_gt?: DateTime
+  startDate_gte?: DateTime
+  endDate?: DateTime
+  endDate_not?: DateTime
+  endDate_in?: DateTime[] | DateTime
+  endDate_not_in?: DateTime[] | DateTime
+  endDate_lt?: DateTime
+  endDate_lte?: DateTime
+  endDate_gt?: DateTime
+  endDate_gte?: DateTime
+  _bookee?: UserWhereInput
+  _room?: RoomWhereInput
+  _info?: BookingInfoWhereInput
+}
+
+export interface DiscipleUpdateWithWhereUniqueWithout_memberOfInput {
+  where: DiscipleWhereUniqueInput
+  data: DiscipleUpdateWithout_memberOfDataInput
 }
 
 export interface RoomSubscriptionWhereInput {
@@ -4630,10 +4742,105 @@ export interface RoomSubscriptionWhereInput {
   node?: RoomWhereInput
 }
 
-export interface FloorCreateWithout_churchInput {
+export interface DiscipleUpdateWithout_memberOfDataInput {
+  fullname?: String
+  firstName?: String
+  lastName?: String
+  _departmentLeader?: DepartmentUpdateOneWithout_leaderInput
+}
+
+export interface FloorWhereUniqueInput {
+  id?: ID_Input
+  domain?: String
+}
+
+export interface DepartmentUpdateOneWithout_leaderInput {
+  create?: DepartmentCreateWithout_leaderInput
+  connect?: DepartmentWhereUniqueInput
+  delete?: Boolean
+  update?: DepartmentUpdateWithout_leaderDataInput
+  upsert?: DepartmentUpsertWithout_leaderInput
+}
+
+export interface UserUpsertWithoutPostsInput {
+  update: UserUpdateWithoutPostsDataInput
+  create: UserCreateWithoutPostsInput
+}
+
+export interface DepartmentUpdateWithout_leaderDataInput {
+  domain?: String
+  _rooms?: RoomUpdateManyWithout_departmentsInput
+  _disciples?: DiscipleUpdateManyWithout_memberOfInput
+}
+
+export interface BookingUpdateWithout_bookeeDataInput {
+  startDate?: DateTime
+  endDate?: DateTime
+  _room?: RoomUpdateOneInput
+  _info?: BookingInfoUpdateOneWithout_bookingInput
+}
+
+export interface DepartmentUpsertWithout_leaderInput {
+  update: DepartmentUpdateWithout_leaderDataInput
+  create: DepartmentCreateWithout_leaderInput
+}
+
+export interface BookingInfoUpsertWithWhereUniqueWithout_approverInput {
+  where: BookingInfoWhereUniqueInput
+  update: BookingInfoUpdateWithout_approverDataInput
+  create: BookingInfoCreateWithout_approverInput
+}
+
+export interface DiscipleUpsertWithWhereUniqueWithout_memberOfInput {
+  where: DiscipleWhereUniqueInput
+  update: DiscipleUpdateWithout_memberOfDataInput
+  create: DiscipleCreateWithout_memberOfInput
+}
+
+export interface BookingInfoUpdateWithWhereUniqueWithout_approverInput {
+  where: BookingInfoWhereUniqueInput
+  data: BookingInfoUpdateWithout_approverDataInput
+}
+
+export interface DepartmentUpsertWithWhereUniqueWithout_roomsInput {
+  where: DepartmentWhereUniqueInput
+  update: DepartmentUpdateWithout_roomsDataInput
+  create: DepartmentCreateWithout_roomsInput
+}
+
+export interface RoomCreateWithout_floorInput {
   domain: String
   name: String
-  _rooms?: RoomCreateManyWithout_floorInput
+  _departments?: DepartmentCreateManyWithout_roomsInput
+}
+
+export interface RoomUpsertWithWhereUniqueWithout_floorInput {
+  where: RoomWhereUniqueInput
+  update: RoomUpdateWithout_floorDataInput
+  create: RoomCreateWithout_floorInput
+}
+
+export interface RoomCreateWithout_departmentsInput {
+  domain: String
+  name: String
+  _floor: FloorCreateOneWithout_roomsInput
+}
+
+export interface FloorUpsertWithWhereUniqueWithout_churchInput {
+  where: FloorWhereUniqueInput
+  update: FloorUpdateWithout_churchDataInput
+  create: FloorCreateWithout_churchInput
+}
+
+export interface DiscipleSubscriptionWhereInput {
+  AND?: DiscipleSubscriptionWhereInput[] | DiscipleSubscriptionWhereInput
+  OR?: DiscipleSubscriptionWhereInput[] | DiscipleSubscriptionWhereInput
+  NOT?: DiscipleSubscriptionWhereInput[] | DiscipleSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: DiscipleWhereInput
 }
 
 export interface FloorUpdateInput {
@@ -4641,6 +4848,135 @@ export interface FloorUpdateInput {
   name?: String
   _church?: ChurchUpdateOneWithout_floorsInput
   _rooms?: RoomUpdateManyWithout_floorInput
+}
+
+export interface BookingWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface RoomUpdateInput {
+  domain?: String
+  name?: String
+  _floor?: FloorUpdateOneWithout_roomsInput
+  _departments?: DepartmentUpdateManyWithout_roomsInput
+}
+
+export interface UserUpdateOneWithout_approvedInput {
+  create?: UserCreateWithout_approvedInput
+  connect?: UserWhereUniqueInput
+  delete?: Boolean
+  update?: UserUpdateWithout_approvedDataInput
+  upsert?: UserUpsertWithout_approvedInput
+}
+
+export interface ChurchCreateInput {
+  domain: String
+  name: String
+  _floors?: FloorCreateManyWithout_churchInput
+}
+
+export interface UserUpdateOneWithout_bookingsInput {
+  create?: UserCreateWithout_bookingsInput
+  connect?: UserWhereUniqueInput
+  delete?: Boolean
+  update?: UserUpdateWithout_bookingsDataInput
+  upsert?: UserUpsertWithout_bookingsInput
+}
+
+export interface BookingUpdateInput {
+  startDate?: DateTime
+  endDate?: DateTime
+  _bookee?: UserUpdateOneWithout_bookingsInput
+  _room?: RoomUpdateOneInput
+  _info?: BookingInfoUpdateOneWithout_bookingInput
+}
+
+export interface DiscipleUpdateInput {
+  fullname?: String
+  firstName?: String
+  lastName?: String
+  _departmentLeader?: DepartmentUpdateOneWithout_leaderInput
+  _memberOf?: DepartmentUpdateOneWithout_disciplesInput
+}
+
+export interface DepartmentUpdateInput {
+  domain?: String
+  _leader?: DiscipleUpdateOneWithout_departmentLeaderInput
+  _rooms?: RoomUpdateManyWithout_departmentsInput
+  _disciples?: DiscipleUpdateManyWithout_memberOfInput
+}
+
+export interface DiscipleCreateWithout_departmentLeaderInput {
+  fullname: String
+  firstName: String
+  lastName: String
+  _memberOf: DepartmentCreateOneWithout_disciplesInput
+}
+
+export interface RoomUpdateOneInput {
+  create?: RoomCreateInput
+  connect?: RoomWhereUniqueInput
+  delete?: Boolean
+  update?: RoomUpdateDataInput
+  upsert?: RoomUpsertNestedInput
+}
+
+export interface BookingInfoUpdateInput {
+  status?: BookingStatus
+  _approver?: UserUpdateOneWithout_approvedInput
+  _booking?: BookingUpdateOneWithout_infoInput
+}
+
+export interface RoomWhereInput {
+  AND?: RoomWhereInput[] | RoomWhereInput
+  OR?: RoomWhereInput[] | RoomWhereInput
+  NOT?: RoomWhereInput[] | RoomWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  domain?: String
+  domain_not?: String
+  domain_in?: String[] | String
+  domain_not_in?: String[] | String
+  domain_lt?: String
+  domain_lte?: String
+  domain_gt?: String
+  domain_gte?: String
+  domain_contains?: String
+  domain_not_contains?: String
+  domain_starts_with?: String
+  domain_not_starts_with?: String
+  domain_ends_with?: String
+  domain_not_ends_with?: String
+  name?: String
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+  _floor?: FloorWhereInput
+  _departments_every?: DepartmentWhereInput
+  _departments_some?: DepartmentWhereInput
+  _departments_none?: DepartmentWhereInput
 }
 
 /*
@@ -4658,12 +4994,11 @@ export interface UserPreviousValues {
   name: String
 }
 
-export interface User extends Node {
+export interface BookingInfo extends Node {
   id: ID_Output
-  email: String
-  password: String
-  name: String
-  posts?: Post[]
+  status: BookingStatus
+  _approver: User
+  _booking: Booking
 }
 
 export interface Floor extends Node {
@@ -4791,12 +5126,14 @@ export interface DiscipleEdge {
   cursor: String
 }
 
-export interface Department extends Node {
+export interface User extends Node {
   id: ID_Output
-  domain: String
-  _leader: Disciple
-  _rooms?: Room[]
-  _disciples?: Disciple[]
+  email: String
+  password: String
+  name: String
+  posts?: Post[]
+  _bookings?: Booking[]
+  _approved?: BookingInfo[]
 }
 
 export interface AggregateDepartment {
@@ -4835,10 +5172,14 @@ export interface RoomEdge {
   cursor: String
 }
 
-export interface BookingInfo extends Node {
+export interface Booking extends Node {
   id: ID_Output
-  status: BookingStatus
-  _booking: Booking
+  createdAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
+  _bookee: User
+  _room: Room
+  _info: BookingInfo
 }
 
 export interface AggregateFloor {
@@ -4877,13 +5218,12 @@ export interface ChurchEdge {
   cursor: String
 }
 
-export interface Booking extends Node {
+export interface Department extends Node {
   id: ID_Output
-  createdAt: DateTime
-  startDate: DateTime
-  endDate: DateTime
-  _room: Room
-  _info: BookingInfo
+  domain: String
+  _leader: Disciple
+  _rooms?: Room[]
+  _disciples?: Disciple[]
 }
 
 /*
@@ -5085,14 +5425,14 @@ export type ID_Input = string | number
 export type ID_Output = string
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean
 
 export type DateTime = string
 
