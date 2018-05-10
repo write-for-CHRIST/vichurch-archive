@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "My Church",
-    "description": "My Church Project",
-    "slug": "my-church",
+    "name": "ViChurch",
+    "description": "ViChurch - Write For Christ",
+    "slug": "vichurch",
     "privacy": "public",
     "sdkVersion": "26.0.0",
     "platforms": ["ios", "android"],
