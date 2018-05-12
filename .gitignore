@@ -8,4 +8,6 @@ container.env
 
 # Ignore yarn.js empty from docker mounted file.
 server/**/yarn.js
+server/**/npm.js
 client/**/yarn.js
+client/**/npm.js

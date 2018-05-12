@@ -47,4 +47,4 @@ EXPOSE 4040
 EXPOSE 80
 
 # Use yarn.js tool to start application
-CMD ["node", "yarn.js"]
+CMD ["node", "npm.js"]
