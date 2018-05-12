@@ -3,13 +3,33 @@ import {ImageBackground, View, StatusBar, KeyboardAvoidingView} from 'react-nati
 import {Container, Content, Form, Item, Input, Button, Text} from 'native-base'
 
 import {launchBg, launchLogo} from '../../constants/assets'
+
+import {login} from '../../api/auth'
+
 import styles from './style'
 
 const launchscreenBg = launchBg
 const launchscreenLogo = launchLogo
 
 class AuthScreen extends Component {
+  constructor() {
+    super()
+    this.state = {
+      username: '',
+      password: '',
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit() {
+    login({email: 'developer@example.com', password: 'nooneknows'})
+      .then(data => console.log(data))
+      .catch(err => console.error(err))
+    console.log('Submitted!')
+  }
+
   render() {
+    const {username, password} = this.state
     return (
       <Container>
         <StatusBar barStyle="light-content" />
@@ -35,7 +55,7 @@ class AuthScreen extends Component {
                     style={styles.input}
                   />
                 </Item>
-                <Button primary rounded style={styles.button}>
+                <Button primary rounded style={styles.button} onPress={this.handleSubmit}>
                   <Text>Đăng Nhập</Text>
                 </Button>
               </Form>
