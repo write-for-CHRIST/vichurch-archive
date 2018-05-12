@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {ImageBackground, View, StatusBar, KeyboardAvoidingView} from 'react-native'
-import {Container, Content, Form, Item, Input, Button, Text} from 'native-base'
+import {Container, Content, Form, Item, Input, Button, Text, Spinner} from 'native-base'
 
 import {launchBg, launchLogo} from '../../constants/assets'
 
-import {login} from '../../api/auth'
+import {authenticate} from '../../api/auth'
 
 import styles from './style'
 
@@ -15,21 +15,32 @@ class AuthScreen extends Component {
   constructor() {
     super()
     this.state = {
-      username: '',
-      password: '',
+      isLogging: false,
+      email: 'developer@example.com',
+      password: 'nooneknows',
     }
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
   }
 
-  handleSubmit() {
-    login({email: 'developer@example.com', password: 'nooneknows'})
-      .then(data => console.log(data))
-      .catch(err => console.error(err))
-    console.log('Submitted!')
+  async handleSubmit() {
+    const {email, password} = this.state
+    this.setState({isLogging: true})
+    await authenticate({email, password})
+    this.setState({isLogging: false})
+  }
+
+  handleEmailChange(value) {
+    this.setState({email: value})
+  }
+
+  handlePasswordChange(value) {
+    this.setState({password: value})
   }
 
   render() {
-    const {username, password} = this.state
+    const {email, password, isLogging} = this.state
     return (
       <Container>
         <StatusBar barStyle="light-content" />
@@ -43,8 +54,10 @@ class AuthScreen extends Component {
                 <Item rounded style={styles.formItem}>
                   <Input
                     placeholderTextColor="#ccc"
-                    placeholder="Tên Đăng Nhập"
+                    placeholder="Email"
                     style={styles.input}
+                    value={email}
+                    onChangeText={this.handleEmailChange}
                   />
                 </Item>
                 <Item rounded last style={styles.formItem}>
@@ -53,11 +66,17 @@ class AuthScreen extends Component {
                     secureTextEntry
                     placeholder="Mật Khẩu"
                     style={styles.input}
+                    value={password}
+                    onChangeText={this.handlePasswordChange}
                   />
                 </Item>
-                <Button primary rounded style={styles.button} onPress={this.handleSubmit}>
-                  <Text>Đăng Nhập</Text>
-                </Button>
+                {isLogging ? (
+                  <Spinner color="white" />
+                ) : (
+                  <Button primary rounded style={styles.button} onPress={this.handleSubmit}>
+                    <Text>Đăng Nhập</Text>
+                  </Button>
+                )}
               </Form>
             </Content>
           </KeyboardAvoidingView>

@@ -5,14 +5,12 @@ import {Container, Spinner} from 'native-base'
 
 // Internal import
 import {launchBg, launchLogo} from '../../constants/assets'
-import {get, set} from '../../api/storage'
 
 import styles from './style'
 
 class LoadingScreen extends Component {
   componentDidMount() {
     const {navigation} = this.props
-    set('samplekey', 'sample_value')
     // setTimeout(() => {
     //   navigation.navigate('Home')
     // }, 3000)

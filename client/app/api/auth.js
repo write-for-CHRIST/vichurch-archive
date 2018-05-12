@@ -1,21 +1,24 @@
 import gql from 'graphql-tag'
-import {client} from './graphql'
+import CONFIG from '../constants'
+import {load, save} from './storage'
+import {client, mutationLogin} from './graphql'
 
 export const login = async ({email, password}) => {
-  return await client.mutate({
-    mutation: gql`
-      mutation login($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-          user {
-            name
-          }
-          token
-        }
-      }
-    `,
-    variables: {
-      email: email,
-      password: password
-    }
+  const authData = await client.mutate({
+    mutation: mutationLogin,
+    variables: {email: email, password: password},
   })
+  return authData.data.login
 }
+
+export const checkLogin = async () => {
+  const token = await load({key: CONFIG.KEY_AUTH_TOKEN})
+  console.log(token)
+}
+
+export const authenticate = async ({email, password}) => {
+  const {token} = await login({email, password})
+  await save({key: CONFIG.KEY_AUTH_TOKEN, value: token})
+  return true
+}
+
