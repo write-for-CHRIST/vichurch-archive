@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import {ImageBackground, View, StatusBar} from 'react-native'
 import {Container, Button, H3, Text} from 'native-base'
+import {appBg} from '../../constants/assets'
 
 import styles from './styles'
 
-const launchscreenBg = require('../../assets/images/launchscreen-bg.png')
 const launchscreenLogo = require('../../assets/images/logo-kitchen-sink.png')
 
 class Home extends Component {
@@ -12,7 +12,7 @@ class Home extends Component {
     return (
       <Container>
         <StatusBar barStyle="light-content" />
-        <ImageBackground source={launchscreenBg} style={styles.imageContainer}>
+        <ImageBackground source={appBg} style={styles.imageContainer}>
           <View style={styles.logoContainer}>
             <ImageBackground source={launchscreenLogo} style={styles.logo} />
           </View>

@@ -25,10 +25,18 @@ class AuthScreen extends Component {
   }
 
   async handleSubmit() {
+    const {navigation} = this.props
     const {email, password} = this.state
     this.setState({isLogging: true})
-    await authenticate({email, password})
-    this.setState({isLogging: false})
+    const success = await authenticate({email, password})
+    if (success) {
+      this.setState({isLogging: false})
+      const screenNumber = navigation.state.params ? navigation.state.params.screenNumber : 0
+      console.log(screenNumber)
+      const params = {screenNumber: screenNumber + 1}
+      if( Math.random() > .75) params.plain = true
+      navigation.navigate('Home', params)
+    }
   }
 
   handleEmailChange(value) {
