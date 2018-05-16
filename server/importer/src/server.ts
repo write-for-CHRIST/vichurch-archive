@@ -10,6 +10,3 @@ const app = new Koa()
 app.use(routes)
 app.listen(PORT)
 console.log(`Importer is running on ${PORT}`)
-
-const tableFloor = {name: 'Floor', fields: ['domain', '_church', '_rooms']}
-getTableFloor(tableFloor)

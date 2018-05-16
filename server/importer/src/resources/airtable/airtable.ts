@@ -24,11 +24,11 @@ const onGetTableError = ({reject}) => err => {
 }
 
 const onGetRecordSuccess = ({resolve, record}) => {
-  console.log(record)
+  resolve(record)
 }
 
 const onGetRecordError = ({reject, err}) => {
-  console.error(err)
+  reject(err)
 }
 
 export const getTableData = async ({name, fields}) => {
@@ -45,6 +45,7 @@ export const getRecord = async ({tableName, recordId, fields}) => {
     const record = baseData.find(recordId, (err, record) => {
       if (err) {
         onGetRecordError({reject, err})
+        return
       }
       onGetRecordSuccess({resolve, record})
     })
