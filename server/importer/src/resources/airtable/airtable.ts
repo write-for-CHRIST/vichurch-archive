@@ -23,11 +23,31 @@ const onGetTableError = ({reject}) => err => {
   reject(err)
 }
 
+const onGetRecordSuccess = ({resolve, record}) => {
+  console.log(record)
+}
+
+const onGetRecordError = ({reject, err}) => {
+  console.error(err)
+}
+
 export const getTableData = async ({name, fields}) => {
   return new Promise((resolve, reject) => {
     const baseData = base(name)
     const baseResult = baseData.select(selector)
     baseResult.eachPage(onGetTableSuccess({resolve, fields}), onGetTableError({reject}))
+  })
+}
+
+export const getRecord = async ({tableName, recordId, fields}) => {
+  return new Promise((resolve, reject) => {
+    const baseData = base(tableName)
+    const record = baseData.find(recordId, (err, record) => {
+      if (err) {
+        onGetRecordError({reject, err})
+      }
+      onGetRecordSuccess({resolve, record})
+    })
   })
 }
 
