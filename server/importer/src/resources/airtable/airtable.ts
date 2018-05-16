@@ -30,3 +30,15 @@ export const getTableData = async ({name, fields}) => {
     baseResult.eachPage(onGetTableSuccess({resolve, fields}), onGetTableError({reject}))
   })
 }
+
+const onFindTableSuccess = ({resolve, fields}) => (records, fetchNextPage) => {
+  const resultFind = []
+  records.forEach(record => {
+    const data = {}
+    for (let i = 0; i < fields.length; i++) {
+      data[fields[i]] = record.get(fields[i])
+    }
+    resultFind.push(data)
+  })
+  resolve(resultFind)
+}
