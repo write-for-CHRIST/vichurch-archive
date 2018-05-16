@@ -1,8 +1,11 @@
 import {getTableData} from './airtable'
-export const getTableChurch = ({name,fields}) => {
-  getTableData({name, fields})
-  .then(result => {
-    console.log(JSON.stringify(result, null, 2))
-  })
-  .catch(err => console.error(err))
+
+export const getTableChurch = async () => {
+  try {
+    const tableChurch = {name: 'Church', fields: ['domain', 'name', '_floors']}
+    const result = await getTableData(tableChurch)
+    return result
+  } catch (err) {
+    console.error(err)
+  }
 }

@@ -9,9 +9,7 @@ import {getTableFloor} from './resources/airtable/floor.airtable'
 const app = new Koa()
 app.use(routes)
 app.listen(PORT)
-
-const tableChurch = {name: 'Church', fields: ['domain', 'name', '_floors']}
-getTableChurch(tableChurch)
+console.log(`Importer is running on ${PORT}`)
 
 const tableFloor = {name: 'Floor', fields: ['domain', '_church', '_rooms']}
 getTableFloor(tableFloor)

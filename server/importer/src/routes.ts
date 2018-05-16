@@ -1,4 +1,5 @@
 import * as Router from 'koa-router'
+import {getTableChurch} from './resources/airtable/church.airtable'
 import {getTableData} from './resources/airtable/airtable'
 
 const router = new Router()
@@ -14,9 +15,9 @@ router.get('/import', async context => {
 })
 
 router.get('/church', async context => {
+  const result = await getTableChurch()
   context.status = 200
-  const tableChurch = {name: 'Church', fields: ['domain', 'name', '_floors']}
-  const result = await getTableData(tableChurch)
   context.body = result
 })
+
 export const routes = router.routes()
